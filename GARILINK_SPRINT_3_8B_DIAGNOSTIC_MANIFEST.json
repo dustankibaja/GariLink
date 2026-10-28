@@ -1,0 +1,74 @@
+{
+  "targetBranch": "codex/identity-evidence-certification-20261023",
+  "expectedRemoteHead": "c46706850ee6b98c0231e468f3b5fb8317bebbef",
+  "parentTree": "76a92f88c9a59a9619c92a1a0f935b755d2d3ff1",
+  "snapshotOrigin": "face66c99cbe44886e02ff2735fa2f910fd03e8d",
+  "priorSnapshotManifestSha256": "bad301a18d433c989993bce90667d3300b35e2adae4ddeaa23343f83ec16b9cf",
+  "sourceFiles": [
+    {
+      "path": "supabase/identity-worker/storage.ts",
+      "bytes": 3681,
+      "sha256": "6d4c26682069084eed71bfb4042ce6c52bd4cb5439ffc8a4755f9cf7676b1259"
+    },
+    {
+      "path": "supabase/tests/identity-infrastructure.test.ts",
+      "bytes": 10175,
+      "sha256": "59d2ff3d4a4f7c8a149af513b60af74e80b033bcc5ab189c84638210a473c11b"
+    },
+    {
+      "path": "supabase/tests/platform-identity-evidence.ts",
+      "bytes": 14156,
+      "sha256": "a25fe00fb866522a4de1e80033f5d77c6d642659ccecad5a20b24104ecca8528"
+    },
+    {
+      "path": "supabase/tests/sealed-storage-diagnostics.ts",
+      "bytes": 1478,
+      "sha256": "e3ec979c2953e68951082eb3f5e67dead99780e3fe8343d58882ffe613dcd0a8"
+    },
+    {
+      "path": "supabase/tests/sealed-storage-diagnostics.test.ts",
+      "bytes": 1644,
+      "sha256": "497ba0feea049b144be0522c05c065534533d62da85bf7fa00a33a59ef972afb"
+    }
+  ],
+  "commitPaths": [
+    "supabase/identity-worker/storage.ts",
+    "supabase/tests/identity-infrastructure.test.ts",
+    "supabase/tests/platform-identity-evidence.ts",
+    "supabase/tests/sealed-storage-diagnostics.ts",
+    "supabase/tests/sealed-storage-diagnostics.test.ts",
+    "GARILINK_SPRINT_3_8B_DIAGNOSTIC_MANIFEST.json"
+  ],
+  "historicalManifests": [
+    {
+      "path": "GARILINK_SPRINT_3_7C_REVIEW_MANIFEST.json",
+      "sha256": "385692439447b45a27978b70ba3a8ad868623f3a500485bfa43f3e742ea548e3",
+      "unchangedGitBlob": "c803c495a1a74dc9f8b98b65691806bd369d291d"
+    },
+    {
+      "path": "GARILINK_SPRINT_3_8A_CORRECTION_MANIFEST.json",
+      "sha256": "7bc1c1b4d34684dde84b1839160635876107a896ecae2902c3785a2782ec6a55",
+      "unchangedGitBlob": "7317422c2ea4fd54106ba5bfc4ee59be9c7a8a78"
+    }
+  ],
+  "validation": {
+    "tests": 176,
+    "passed": 176,
+    "failed": 0,
+    "skipped": 0,
+    "node": "24.22.1",
+    "pglast": "7.21",
+    "syntax": "PASS",
+    "diffCheck": "PASS",
+    "scopedCredentialPatternScan": "PASS",
+    "realInfrastructure": "NOT EXECUTED"
+  },
+  "trigger": "Existing push trigger on target branch; no workflow change or separate dispatch",
+  "authorization": "NOT GRANTED; no commit, push or CI dispatch",
+  "notes": [
+    "Preserve prior InternalError and UnknownError allowlist and privacy tests from face66c without its three reports.",
+    "Five source files plus this new manifest only; historical manifests unchanged.",
+    "Service-role control is confined to guarded disposable runner; no ACL, policy, role or production flag changes.",
+    "Root cause unknown; diagnostic instrumentation is not an underlying Storage fix."
+  ]
+}

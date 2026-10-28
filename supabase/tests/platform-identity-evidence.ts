@@ -2,7 +2,7 @@
  * no synthetic CLEAN provider. The entire runner's services are destroyed by
  * CI cleanup; immutable identity histories are never deleted to remove users. */
 import {spawnSync} from 'node:child_process';
-import {createHmac,randomBytes,randomUUID} from 'node:crypto';
+import {createHash,createHmac,randomBytes,randomUUID} from 'node:crypto';
 import {deflateSync} from 'node:zlib';
 import assert from 'node:assert/strict';
 import postgres from 'postgres';
@@ -11,6 +11,7 @@ import {createEvidenceDatabase} from '../identity-worker/database.ts';
 import {PrivateEvidenceStorage} from '../identity-worker/storage.ts';
 import {createClamAvScanner} from '../identity-worker/clamav.ts';
 import {inspectSealAndFinalize} from '../identity-worker/process.ts';
+import {diagnoseSealedRead} from './sealed-storage-diagnostics.ts';
 
 if(process.env.GITHUB_ACTIONS!=='true' || process.env.GARILINK_DISPOSABLE_IDENTITY!=='true')
   throw new Error('Explicit disposable GitHub runner required');
@@ -90,9 +91,55 @@ try{
   pass((await upload(reviewer.token)).status===403,'Cross-applicant upload denied');
   pass((await upload(applicant.token)).status===201,'Actual authenticated quarantine upload');
   const storage=new PrivateEvidenceStorage(config.API_URL,config.ANON_KEY,sealer);
+  const readerStorage=new PrivateEvidenceStorage(config.API_URL,config.ANON_KEY,reader);
+  async function storageDiagnostic(path:string,phase:'sequential'|'concurrent-failure'){
+    const result=await diagnoseSealedRead({expected:png,
+      metadata:async role=>sql.begin(async tx=>{
+        await tx`set local statement_timeout='5s'`;
+        // Fixed statements only; role names cannot come from user input.
+        if(role==='sealer')await tx`set local role garilink_evidence_sealer`;
+        else await tx`set local role garilink_evidence_reader`;
+        const rows=await tx`select id,version,metadata from storage.objects
+          where bucket_id='verification-sealed' and name=${path}`;
+        return {visible:rows.length===1,versioned:rows.length===1 && typeof rows[0].version==='string' && rows[0].version.length>0};
+      }),
+      read:async role=>{
+        if(role!=='control')return (role==='sealer'?storage:readerStorage)
+          .read('verification-sealed',path,AbortSignal.timeout(10000));
+        // Known-good authorized control ONLY in this exact guarded disposable
+        // runner. Never passed to the worker, proxy, Flutter or adapter.
+        const response=await fetch(`${config.API_URL}/storage/v1/object/authenticated/verification-sealed/${path}`,{
+          redirect:'error',signal:AbortSignal.timeout(10000),headers:{apikey:config.SERVICE_ROLE_KEY,
+            Authorization:`Bearer ${config.SERVICE_ROLE_KEY}`}});
+        if(!response.ok){await response.body?.cancel();
+          throw new Error(`STORAGE_READ_REJECTED stage=sealed-read status=${response.status} code=UNSPECIFIED`);}
+        return new Uint8Array(await response.arrayBuffer());
+      }});
+    console.log(`SEALED_DIAGNOSTIC phase=${phase} ${JSON.stringify(result)}`);
+    return result;
+  }
+  // Separate synthetic key; no database finalization. All comparisons complete
+  // even when the first role fails. Cleanup destroys the entire disposable stack.
+  const digest=createHash('sha256').update(png).digest('hex');
+  const sequentialPath=`${randomUUID()}/1/${digest}.png`;
+  await storage.create('verification-sealed',sequentialPath,png,AbortSignal.timeout(10000));
+  const sequential=await storageDiagnostic(sequentialPath,'sequential');
+  pass(sequential.sealerRead==='EXACT' && sequential.readerRead==='EXACT' && sequential.controlRead==='EXACT',
+    'Sequential sealed create and role-scoped rereads return exact bytes');
+  const reserved=await worker.snapshot(r.documentId);
+  pass(reserved.documentId===r.documentId && Number.isSafeInteger(reserved.version) && reserved.version>0,
+    'Failure diagnostics bind the actual reserved document version');
+  const concurrentPath=`${reserved.documentId}/${reserved.version}/${digest}.png`;
   const operation={documentId:r.documentId,caseRevision:1,requestId:randomUUID()};
-  const finalizations=await Promise.all([1,2].map(()=>inspectSealAndFinalize(operation,
+  const attempts=await Promise.allSettled([1,2].map(()=>inspectSealAndFinalize(operation,
     {database:worker!,storage,scanner},AbortSignal.timeout(20000))));
+  console.log(`FINALIZATION_DIAGNOSTIC ${JSON.stringify(attempts.map(x=>x.status))}`);
+  if(attempts.some(x=>x.status==='rejected')){
+    await storageDiagnostic(concurrentPath,'concurrent-failure');
+    // Both workers have settled before diagnosing or shutting down services.
+    throw new Error('CONCURRENT_FINALIZATION_FAILED');
+  }
+  const finalizations=attempts.map(x=>{if(x.status!=='fulfilled')throw new Error('FINALIZATION_FAILED');return x.value;});
   const finalized=finalizations[0];
   pass(finalizations[1].sha256===finalized.sha256,'Concurrent exact finalization has one immutable outcome');
   pass(finalized.documentId===r.documentId,'Actual bytes decoded/scanned/sealed/finalized');
