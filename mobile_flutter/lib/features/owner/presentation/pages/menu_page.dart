@@ -22,16 +22,16 @@ class MenuPage extends ConsumerWidget {
           children: [
             const SizedBox(height: GariLinkSpacing.lg),
             _buildSectionHeader('BUSINESS SETTINGS'),
-            _buildMenuItem('Business Profile', Icons.business_outlined),
-            _buildMenuItem('Payment & Payouts', Icons.payments_outlined),
-            _buildMenuItem('Team Management', Icons.group_outlined),
-            _buildMenuItem('Subscription', Icons.workspace_premium_outlined),
+            _buildMenuItem('Business Profile', GariLinkIcons.businessProfile),
+            _buildMenuItem('Payment & Payouts', GariLinkIcons.payments),
+            _buildMenuItem('Team Management', GariLinkIcons.team),
+            _buildMenuItem('Subscription', GariLinkIcons.subscription),
 
             const SizedBox(height: GariLinkSpacing.xl),
             _buildSectionHeader('SUPPORT'),
-            _buildMenuItem('Help Center', Icons.help_outline),
-            _buildMenuItem('Contact Support', Icons.headset_mic_outlined),
-            _buildMenuItem('Feedback', Icons.rate_review_outlined),
+            _buildMenuItem('Help Center', GariLinkIcons.help),
+            _buildMenuItem('Contact Support', GariLinkIcons.contactSupport),
+            _buildMenuItem('Feedback', GariLinkIcons.feedback),
 
             const SizedBox(height: GariLinkSpacing.xl),
             _buildLogoutButton(ref),
@@ -59,7 +59,7 @@ class MenuPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildMenuItem(String title, IconData icon) {
+  Widget _buildMenuItem(String title, GariIconData icon) {
     return Semantics(
       enabled: false,
       label: '$title, not available yet',
@@ -82,7 +82,11 @@ class MenuPage extends ConsumerWidget {
                 color: GariLinkColors.neutral100,
                 borderRadius: BorderRadius.circular(GariLinkRadius.badge),
               ),
-              child: Icon(icon, color: GariLinkColors.textPrimary, size: 20),
+              child: GariIcon(
+                icon,
+                color: GariLinkColors.textPrimary,
+                size: 20,
+              ),
             ),
             const SizedBox(width: GariLinkSpacing.md),
             Expanded(
@@ -106,8 +110,8 @@ class MenuPage extends ConsumerWidget {
                 ],
               ),
             ),
-            const Icon(
-              Icons.lock_clock_outlined,
+            const GariIcon(
+              GariLinkIcons.lockClock,
               color: GariLinkColors.textMuted,
             ),
           ],
@@ -136,8 +140,8 @@ class MenuPage extends ConsumerWidget {
                 color: GariLinkColors.error.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(GariLinkRadius.badge),
               ),
-              child: const Icon(
-                Icons.logout_rounded,
+              child: const GariIcon(
+                GariLinkIcons.logout,
                 color: GariLinkColors.error,
                 size: 20,
               ),

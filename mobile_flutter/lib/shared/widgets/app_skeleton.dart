@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/animations.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/radius.dart';
@@ -102,8 +103,11 @@ class _AppSkeletonState extends State<AppSkeleton>
         ? GariLinkColors.neutral700
         : GariLinkColors.neutral200;
 
+    final reduced = GariLinkAnimations.reduceMotion(context);
+    if (reduced && _controller.isAnimating) _controller.stop();
+    if (!reduced && !_controller.isAnimating) _controller.repeat(reverse: true);
     return FadeTransition(
-      opacity: _animation,
+      opacity: reduced ? const AlwaysStoppedAnimation(1.0) : _animation,
       child: Container(
         width: widget.width,
         height: widget.height,

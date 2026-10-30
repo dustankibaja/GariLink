@@ -115,7 +115,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         const _VehicleHero(),
                         const SizedBox(height: 24),
                         _Surface(
-                          tint: const Color(0xFFF4F7FB),
+                          tint: GariLinkColors.surface,
                           child: TransportNeedForm(
                             key: _needKey,
                             variant: TransportNeedFormVariant.home,
@@ -123,7 +123,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         ),
                         const SizedBox(height: 16),
                         _Surface(
-                          tint: const Color(0xFFF2F7FF),
+                          tint: GariLinkColors.surface,
                           child: _locationContent,
                         ),
                         const SizedBox(height: 24),
@@ -145,7 +145,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                         const SizedBox(height: 12),
                         SizedBox(
                           height:
-                              176 +
+                              200 +
                               (MediaQuery.textScalerOf(context).scale(100) -
                                           100)
                                       .clamp(0, 100) *
@@ -209,7 +209,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     dimension: 16,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.my_location_rounded, size: 18),
+                : const GariIcon(GariLinkIcons.myLocation, size: 18),
             label: const Text('Use my location'),
           ),
         ],
@@ -232,8 +232,8 @@ class _HomePageState extends ConsumerState<HomePage> {
             ),
             child: Row(
               children: [
-                const Icon(
-                  Icons.location_on_outlined,
+                const GariIcon(
+                  GariLinkIcons.location,
                   color: GariLinkColors.accent,
                 ),
                 const SizedBox(width: 12),
@@ -247,8 +247,8 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                   ),
                 ),
-                const Icon(
-                  Icons.chevron_right_rounded,
+                const GariIcon(
+                  GariLinkIcons.chevronRight,
                   color: GariLinkColors.textMuted,
                 ),
               ],
@@ -260,7 +260,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       FilledButton.icon(
         key: const Key('find-vehicles-button'),
         onPressed: _findVehicles,
-        icon: const Icon(Icons.search_rounded),
+        icon: const GariIcon(GariLinkIcons.search),
         label: const Text('Find vehicles'),
       ),
     ],
@@ -327,86 +327,65 @@ class _Header extends StatelessWidget {
 class _VehicleHero extends StatelessWidget {
   const _VehicleHero();
   @override
-  Widget build(BuildContext context) {
-    final baseHeight = MediaQuery.sizeOf(context).width <= 340 ? 132.0 : 148.0;
-    final textScale = MediaQuery.textScalerOf(context).scale(1);
-    final accessibleHeight = baseHeight + ((textScale - 1).clamp(0, 1) * 196);
-    return Semantics(
-      image: true,
-      label: 'Cars, an SUV and a truck ready for different journeys',
-      child: Container(
+  Widget build(BuildContext context) => Semantics(
+    image: true,
+    label: 'Cars, an SUV and a truck ready for different journeys',
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(24),
+      child: ColoredBox(
         key: const Key('home-vehicle-hero'),
-        height: accessibleHeight,
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: const [GariLinkShadows.softOverlay],
-        ),
-        child: Stack(
-          fit: StackFit.expand,
+        color: GariLinkColors.primary,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.asset(
-              'assets/images/home/garilink_home_hero.jpg',
-              key: const Key('home-hero-photo'),
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-              cacheWidth: 1280,
-              excludeFromSemantics: true,
-              errorBuilder: (_, _, _) => const Center(
-                child: Icon(
-                  Icons.image_not_supported_outlined,
-                  color: GariLinkColors.textMuted,
-                ),
-              ),
-            ),
-            const DecoratedBox(
-              key: Key('home-hero-gradient'),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.center,
-                  colors: [Color(0xD90B1F3A), Color(0x3D0B1F3A)],
-                  stops: [0, .68],
-                ),
-              ),
-            ),
             Padding(
-              padding: const EdgeInsets.all(14),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 280),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Transport for\nevery move.',
-                        key: const Key('home-hero-headline'),
-                        style: GariLinkTypography.largeTitle.copyWith(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w800,
-                          height: 1.03,
-                          shadows: const [
-                            Shadow(color: Color(0x52000000), blurRadius: 8),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Cars, SUVs, pickups and trucks\nfor people, goods and businesses.',
-                        key: const Key('home-hero-supporting-copy'),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: GariLinkTypography.bodySmall.copyWith(
-                          color: const Color(0xFFF8FAFC),
-                          fontSize: 10.5,
-                          height: 1.25,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
+              padding: const EdgeInsets.fromLTRB(24, 24, 24, 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'MOVE WITH POSSIBILITY',
+                    style: GariLinkTypography.labelSmall.copyWith(
+                      color: const Color(0xFFBBD8FF),
+                      letterSpacing: 2,
+                      fontSize: 11,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Transport for\nevery move.',
+                    key: const Key('home-hero-headline'),
+                    style: GariLinkTypography.display.copyWith(
+                      color: Colors.white,
+                      fontSize: 32,
+                      height: 1.12,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'Cars, SUVs, pickups and trucks for people, goods and businesses.',
+                    key: const Key('home-hero-supporting-copy'),
+                    style: GariLinkTypography.bodySmall.copyWith(
+                      color: const Color(0xFFDCE8F7),
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            DecoratedBox(
+              key: const Key('home-hero-gradient'),
+              decoration: const BoxDecoration(color: GariLinkColors.primary),
+              child: AspectRatio(
+                aspectRatio: 1280 / 311,
+                child: Image.asset(
+                  'assets/images/home/garilink_home_hero.jpg',
+                  key: const Key('home-hero-photo'),
+                  fit: BoxFit.contain,
+                  cacheWidth: 1280,
+                  excludeFromSemantics: true,
+                  errorBuilder: (_, _, _) => const Center(
+                    child: GariIcon(GariLinkIcons.photo, color: Colors.white),
                   ),
                 ),
               ),
@@ -414,8 +393,8 @@ class _VehicleHero extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
 }
 
 class _Surface extends StatelessWidget {
@@ -423,12 +402,13 @@ class _Surface extends StatelessWidget {
   final Widget child;
   final Color tint;
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: tint,
+  Widget build(BuildContext context) => Material(
+    color: tint,
+    shape: RoundedRectangleBorder(
+      side: const BorderSide(color: GariLinkColors.border),
       borderRadius: BorderRadius.circular(24),
-      boxShadow: const [GariLinkShadows.card],
     ),
+    clipBehavior: Clip.antiAlias,
     child: Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: GariLinkSpacing.md,
@@ -466,14 +446,14 @@ const _popularCategories = <_PopularCategory>[
     'SUVs',
     'Space for family and groups',
     'assets/images/home/category_suvs.jpg',
-    Color(0xFF7C3AED),
+    GariLinkColors.primary,
     TransportNeed(purpose: TransportPurpose.familyOrGroup),
   ),
   _PopularCategory(
     'Pickups',
     'For work and business',
     'assets/images/home/category_pickups.jpg',
-    Color(0xFFD97706),
+    GariLinkColors.accentDark,
     TransportNeed(purpose: TransportPurpose.businessTransport),
   ),
 ];
@@ -585,7 +565,7 @@ class _AreaPicker extends StatelessWidget {
         ..._areas.map(
           (area) => ListTile(
             minVerticalPadding: 12,
-            leading: const Icon(Icons.location_on_outlined),
+            leading: const GariIcon(GariLinkIcons.location),
             title: Text(area.city!),
             onTap: () => Navigator.pop(context, area),
           ),

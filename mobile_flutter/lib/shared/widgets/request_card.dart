@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -53,7 +54,10 @@ class RequestCard extends StatelessWidget {
                     width: 90,
                     height: 80,
                     color: Colors.grey[200],
-                    child: const Icon(Icons.directions_car, color: Colors.grey),
+                    child: const GariIcon(
+                      GariLinkIcons.vehicles,
+                      color: Colors.grey,
+                    ),
                   ),
                 ),
               ),

@@ -53,14 +53,14 @@ class _TripsPageState extends ConsumerState<TripsPage>
           IconButton(
             tooltip: 'Refresh trips',
             onPressed: () => ref.invalidate(myTripsProvider),
-            icon: const Icon(Icons.refresh_rounded),
+            icon: const GariIcon(GariLinkIcons.refresh),
           ),
         ],
       ),
       body: rentals.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, _) => _MessageState(
-          icon: Icons.cloud_off_outlined,
+          icon: GariLinkIcons.cloudOff,
           title: 'Trips could not be loaded',
           message: 'Check your connection and try again.',
           actionLabel: 'Try again',
@@ -70,11 +70,11 @@ class _TripsPageState extends ConsumerState<TripsPage>
           onRefresh: () => ref.refresh(myTripsProvider.future),
           child: items.isEmpty
               ? _MessageState(
-                  icon: Icons.route_outlined,
+                  icon: GariLinkIcons.route,
                   title: 'No trips yet',
                   message: 'Rental requests and active trips will appear here.',
                   actionLabel: 'Find a vehicle',
-                  actionIcon: Icons.search_rounded,
+                  actionIcon: GariLinkIcons.search,
                   onAction: () => context.go('/explore'),
                 )
               : _TripsList(
@@ -283,7 +283,7 @@ class RentalTripCard extends StatelessWidget {
                         child: rental.vehicle.imageUrl == null
                             ? const ColoredBox(
                                 color: GariLinkColors.neutral100,
-                                child: Icon(Icons.directions_car_rounded),
+                                child: GariIcon(GariLinkIcons.vehicles),
                               )
                             : CachedNetworkImage(
                                 imageUrl: rental.vehicle.imageUrl!,
@@ -294,7 +294,7 @@ class RentalTripCard extends StatelessWidget {
                                 ),
                                 errorWidget: (_, _, _) => const ColoredBox(
                                   color: GariLinkColors.neutral100,
-                                  child: Icon(Icons.broken_image_outlined),
+                                  child: GariIcon(GariLinkIcons.photo),
                                 ),
                               ),
                       ),
@@ -356,7 +356,7 @@ class RentalTripCard extends StatelessWidget {
                               dimension: 16,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Icon(Icons.close_rounded),
+                          : const GariIcon(GariLinkIcons.close),
                       label: const Text('Cancel request'),
                     ),
                   ),
@@ -378,7 +378,7 @@ class _StatusChip extends StatelessWidget {
   });
   final String label;
   final Color color;
-  final IconData icon;
+  final GariIconData icon;
 
   @override
   Widget build(BuildContext context) => Container(
@@ -390,7 +390,7 @@ class _StatusChip extends StatelessWidget {
     child: Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 15, color: color),
+        GariIcon(icon, size: 15, color: color),
         const SizedBox(width: 4),
         Text(
           label,
@@ -407,14 +407,14 @@ class _MessageState extends StatelessWidget {
     required this.title,
     required this.message,
     this.actionLabel,
-    this.actionIcon = Icons.refresh_rounded,
+    this.actionIcon = GariLinkIcons.refresh,
     this.onAction,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final String? actionLabel;
-  final IconData actionIcon;
+  final GariIconData actionIcon;
   final VoidCallback? onAction;
 
   @override
@@ -423,7 +423,7 @@ class _MessageState extends StatelessWidget {
     padding: const EdgeInsets.all(GariLinkSpacing.xxxl),
     children: [
       const SizedBox(height: 100),
-      Icon(icon, size: 56, color: GariLinkColors.textMuted),
+      GariIcon(icon, size: 56, color: GariLinkColors.textMuted),
       const SizedBox(height: GariLinkSpacing.lg),
       Text(
         title,
@@ -441,7 +441,7 @@ class _MessageState extends StatelessWidget {
         Center(
           child: FilledButton.icon(
             onPressed: onAction,
-            icon: Icon(actionIcon),
+            icon: GariIcon(actionIcon),
             label: Text(actionLabel ?? 'Try again'),
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/errors/app_exception.dart';
@@ -122,7 +123,7 @@ class _EditProfileSheetState extends ConsumerState<_EditProfileSheet> {
                             onPressed: _saving
                                 ? null
                                 : () => Navigator.pop(context),
-                            icon: const Icon(Icons.close),
+                            icon: const GariIcon(GariLinkIcons.close),
                           ),
                         ],
                       ),

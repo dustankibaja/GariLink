@@ -1,3 +1,4 @@
+import 'helpers/find_gari_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:garilink_mobile/core/theme/theme.dart';
@@ -90,7 +91,7 @@ void main() {
       _app(const Center(child: StatusBadge(status: 'APPROVED'))),
     );
     expect(find.text('APPROVED'), findsOneWidget);
-    expect(find.byIcon(Icons.check_circle_outline_rounded), findsOneWidget);
+    expect(findGariIcon(GariLinkIcons.confirmed), findsOneWidget);
   });
 
   testWidgets('price text uses grouped TZS formatting', (tester) async {

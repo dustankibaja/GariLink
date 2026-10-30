@@ -489,7 +489,7 @@ class ScaffoldWithNavBar extends ConsumerWidget {
               backgroundColor: GariLinkColors.accent,
               shape: const CircleBorder(),
               elevation: 4,
-              child: const Icon(
+              child: const GariIcon(
                 GariLinkIcons.add,
                 color: Colors.white,
                 size: 28,
@@ -502,7 +502,7 @@ class ScaffoldWithNavBar extends ConsumerWidget {
         color: isDark ? GariLinkColors.darkSurface : Colors.white,
         elevation: 8,
         padding: EdgeInsets.zero,
-        height: GariLinkDimensions.bottomNavigationHeight,
+        height: GariLinkDimensions.navigationHeight(context),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -557,8 +557,8 @@ class ScaffoldWithNavBar extends ConsumerWidget {
 // ─── Nav item data ─────────────────────────────────────────────────────────
 
 class _NavItem {
-  final IconData icon;
-  final IconData activeIcon;
+  final GariIconData icon;
+  final GariIconData activeIcon;
   final String label;
   final String path;
   const _NavItem({
@@ -590,22 +590,40 @@ class _NavItemWidget extends StatelessWidget {
       onTap: onTap,
       borderRadius: GariLinkRadius.badgeBorderRadius,
       child: SizedBox(
-        height: GariLinkDimensions.bottomNavigationHeight,
+        height: GariLinkDimensions.navigationHeight(context),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              isActive ? item.activeIcon : item.icon,
-              color: color,
-              size: 22,
+            AnimatedContainer(
+              duration: GariLinkAnimations.duration(
+                context,
+                GariLinkAnimations.short,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+              decoration: BoxDecoration(
+                color: isActive
+                    ? GariLinkColors.accentLight
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(14),
+              ),
+              child: GariIcon(
+                isActive ? item.activeIcon : item.icon,
+                color: color,
+                size: 24,
+                strokeWidth: isActive ? 2.2 : 1.8,
+              ),
             ),
             const SizedBox(height: 2),
-            Text(
-              item.label,
-              style: GoogleFonts.inter(
-                fontSize: 10,
-                fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
-                color: color,
+            Flexible(
+              child: Text(
+                item.label,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                style: GoogleFonts.inter(
+                  fontSize: 12,
+                  fontWeight: isActive ? FontWeight.w600 : FontWeight.w400,
+                  color: color,
+                ),
               ),
             ),
           ],
@@ -648,7 +666,7 @@ class _ListVehicleSheet extends StatelessWidget {
           const SizedBox(height: 24),
           AppButton(
             text: 'Go to owner dashboard',
-            icon: Icons.dashboard_outlined,
+            icon: GariLinkIcons.dashboard,
             onPressed: () {
               Navigator.pop(context);
               context.go('/owner-dashboard');

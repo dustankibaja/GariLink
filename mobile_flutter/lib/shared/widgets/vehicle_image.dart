@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -58,8 +59,8 @@ class _Fallback extends StatelessWidget {
       child: ColoredBox(
         color: GariLinkColors.neutral100,
         child: Center(
-          child: Icon(
-            Icons.directions_car_filled_outlined,
+          child: GariIcon(
+            GariLinkIcons.vehicles,
             size: 42,
             color: GariLinkColors.textMuted,
           ),

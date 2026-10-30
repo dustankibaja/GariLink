@@ -1,8 +1,9 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CategoryButton extends StatelessWidget {
-  final IconData icon;
+  final GariIconData icon;
   final String label;
   final bool isActive;
   final VoidCallback onTap;
@@ -31,7 +32,7 @@ class CategoryButton extends StatelessWidget {
                   : const Color(0xFFF1F5F9),
               shape: BoxShape.circle,
             ),
-            child: Icon(
+            child: GariIcon(
               icon,
               color: isActive ? Colors.white : const Color(0xFF0B1F3A),
               size: 24,

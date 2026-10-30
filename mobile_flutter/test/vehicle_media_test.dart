@@ -1,3 +1,5 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
+import 'helpers/find_gari_icon.dart';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -59,7 +61,7 @@ void main() {
       ),
     );
 
-    expect(find.byIcon(Icons.directions_car_filled_outlined), findsOneWidget);
+    expect(findGariIcon(GariLinkIcons.vehicles), findsOneWidget);
     expect(find.bySemanticsLabel('Vehicle photo unavailable'), findsOneWidget);
     expect(find.byType(Image), findsNothing);
   });

@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -138,8 +139,8 @@ class _VerifyPhonePageState extends ConsumerState<VerifyPhonePage> {
         elevation: 0,
         leading: IconButton(
           tooltip: 'Sign out and use another account',
-          icon: Icon(
-            Icons.arrow_back,
+          icon: GariIcon(
+            GariLinkIcons.back,
             color: isDark ? Colors.white : GariLinkColors.textPrimary,
           ),
           onPressed: authState.isLoading

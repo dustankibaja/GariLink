@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -58,24 +59,24 @@ class StatusBadge extends StatelessWidget {
       }
     }
 
-    IconData getIcon(String label) {
+    GariIconData getIcon(String label) {
       switch (label.toUpperCase()) {
         case 'ACTIVE':
         case 'APPROVED':
         case 'COMPLETED':
         case 'AVAILABLE':
-          return Icons.check_circle_outline_rounded;
+          return GariLinkIcons.confirmed;
         case 'PENDING':
         case 'DRAFT':
         case 'PAUSED':
-          return Icons.schedule_rounded;
+          return GariLinkIcons.clock;
         case 'REJECTED':
         case 'CANCELLED':
         case 'REVOKED':
         case 'SUSPENDED':
-          return Icons.cancel_outlined;
+          return GariLinkIcons.cancelled;
         default:
-          return Icons.info_outline_rounded;
+          return GariLinkIcons.info;
       }
     }
 
@@ -95,7 +96,7 @@ class StatusBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(getIcon(status), size: 13, color: getTextColor(status)),
+            GariIcon(getIcon(status), size: 13, color: getTextColor(status)),
             const SizedBox(width: GariLinkSpacing.xs),
             Flexible(
               child: Text(

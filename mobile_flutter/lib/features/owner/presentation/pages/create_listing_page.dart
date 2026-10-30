@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -367,7 +368,7 @@ class _CreateListingPageState extends ConsumerState<CreateListingPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.cloud_off_outlined, size: 40),
+                    const GariIcon(GariLinkIcons.cloudOff, size: 40),
                     const SizedBox(height: 16),
                     Text(_error ?? 'Workspaces could not be loaded.'),
                     TextButton(
@@ -713,7 +714,7 @@ class _CreateListingPageState extends ConsumerState<CreateListingPage> {
                               dimension: 18,
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
-                          : const Icon(Icons.save_outlined),
+                          : const GariIcon(GariLinkIcons.save),
                       label: Text(
                         _saving
                             ? 'Saving…'

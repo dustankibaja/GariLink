@@ -163,9 +163,9 @@ class TransportNeedFormState extends State<TransportNeedForm> {
             ...option.purposes.map(
               (purpose) => ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(option.icon, color: option.accent),
+                leading: GariIcon(option.icon, color: option.accent),
                 title: Text(purpose.label),
-                trailing: const Icon(Icons.chevron_right_rounded),
+                trailing: const GariIcon(GariLinkIcons.chevronRight),
                 onTap: () => Navigator.pop(context, purpose),
               ),
             ),
@@ -189,7 +189,7 @@ class TransportNeedFormState extends State<TransportNeedForm> {
         children: _homePurposes.map((option) {
           final selected = option.purposes.contains(_purpose);
           final width = option.fullWidth ? constraints.maxWidth : cardWidth;
-          final minimumHeight = option.fullWidth || oneColumn ? 80.0 : 104.0;
+          final minimumHeight = option.fullWidth || oneColumn ? 92.0 : 120.0;
           return ConstrainedBox(
             constraints: BoxConstraints(
               minWidth: width,
@@ -202,7 +202,10 @@ class TransportNeedFormState extends State<TransportNeedForm> {
               label: '${option.title}. ${option.description}',
               child: AnimatedContainer(
                 key: Key('home-purpose-surface-${option.title}'),
-                duration: const Duration(milliseconds: 220),
+                duration: GariLinkAnimations.duration(
+                  context,
+                  GariLinkAnimations.standard,
+                ),
                 curve: Curves.easeOutCubic,
                 decoration: BoxDecoration(
                   color: selected
@@ -241,10 +244,10 @@ class TransportNeedFormState extends State<TransportNeedForm> {
                             color: option.accent.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: Icon(
+                          child: GariIcon(
                             option.icon,
                             color: option.accent,
-                            size: 23,
+                            size: 30,
                           ),
                         ),
                         const SizedBox(width: GariLinkSpacing.sm),
@@ -265,8 +268,8 @@ class TransportNeedFormState extends State<TransportNeedForm> {
                                     ),
                                   ),
                                   if (selected)
-                                    Icon(
-                                      Icons.check_circle_rounded,
+                                    GariIcon(
+                                      GariLinkIcons.confirmed,
                                       color: option.accent,
                                       size: 20,
                                     ),
@@ -461,7 +464,7 @@ class _HomePurpose {
   final String title;
   final String displayTitle;
   final String description;
-  final IconData icon;
+  final GariIconData icon;
   final Color accent;
   final Color tint;
   final List<TransportPurpose> purposes;
@@ -473,45 +476,45 @@ const _homePurposes = <_HomePurpose>[
     title: 'Personal trip',
     displayTitle: 'Personal trip',
     description: 'City and nearby travel',
-    icon: Icons.directions_car_outlined,
-    accent: Color(0xFF2563EB),
-    tint: Color(0xFFEFF6FF),
+    icon: GariLinkIcons.vehicles,
+    accent: GariLinkColors.primary,
+    tint: GariLinkColors.accentLight,
     purposes: [TransportPurpose.personalTrip],
   ),
   _HomePurpose(
     title: 'Group travel',
     displayTitle: 'Group travel',
     description: 'Travel together',
-    icon: Icons.groups_2_outlined,
-    accent: Color(0xFF7C3AED),
-    tint: Color(0xFFF5F3FF),
+    icon: GariLinkIcons.team,
+    accent: GariLinkColors.primary,
+    tint: GariLinkColors.accentLight,
     purposes: [TransportPurpose.familyOrGroup],
   ),
   _HomePurpose(
     title: 'Deliver goods',
     displayTitle: 'Deliver\ngoods',
     description: 'Parcels & small cargo',
-    icon: Icons.inventory_2_outlined,
-    accent: Color(0xFFD97706),
-    tint: Color(0xFFFFFBEB),
+    icon: GariLinkIcons.cargo,
+    accent: GariLinkColors.primary,
+    tint: GariLinkColors.accentLight,
     purposes: [TransportPurpose.parcelDelivery, TransportPurpose.smallCargo],
   ),
   _HomePurpose(
     title: 'Moving goods',
     displayTitle: 'Moving\ngoods',
     description: 'Vans for larger loads',
-    icon: Icons.local_shipping_outlined,
-    accent: Color(0xFF059669),
-    tint: Color(0xFFECFDF5),
+    icon: GariLinkIcons.truck,
+    accent: GariLinkColors.primary,
+    tint: GariLinkColors.accentLight,
     purposes: [TransportPurpose.movingGoods],
   ),
   _HomePurpose(
     title: 'Heavy cargo',
     displayTitle: 'Heavy cargo',
     description: 'Trucks for big jobs',
-    icon: Icons.fire_truck_outlined,
-    accent: Color(0xFFB45309),
-    tint: Color(0xFFFFF7ED),
+    icon: GariLinkIcons.truck,
+    accent: GariLinkColors.primary,
+    tint: GariLinkColors.accentLight,
     purposes: [
       TransportPurpose.regionalCargo,
       TransportPurpose.heavyCargo,

@@ -30,8 +30,8 @@ class AnalyticsPage extends StatelessWidget {
                 child: Row(
                   children: [
                     Text('This Month', style: GariLinkTypography.bodyMedium),
-                    const Icon(
-                      Icons.arrow_drop_down,
+                    const GariIcon(
+                      GariLinkIcons.arrowDown,
                       color: GariLinkColors.textPrimary,
                     ),
                   ],
@@ -195,8 +195,8 @@ class AnalyticsPage extends StatelessWidget {
               color: GariLinkColors.neutral100,
               borderRadius: BorderRadius.circular(GariLinkRadius.input),
             ),
-            child: const Icon(
-              Icons.directions_car,
+            child: const GariIcon(
+              GariLinkIcons.vehicles,
               color: GariLinkColors.textMuted,
               size: 40,
             ),

@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -22,8 +23,8 @@ class ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline_rounded,
+            const GariIcon(
+              GariLinkIcons.error,
               size: GariLinkDimensions.emptyStateIcon,
               color: GariLinkColors.error,
             ),

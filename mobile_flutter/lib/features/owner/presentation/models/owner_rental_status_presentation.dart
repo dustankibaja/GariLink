@@ -28,7 +28,7 @@ class OwnerRentalStatusPresentation {
   final String explanation;
   final String nextStep;
   final Color color;
-  final IconData icon;
+  final GariIconData icon;
   final OwnerRentalQueueGroup group;
   final OwnerRentalAction? primaryAction;
   final String? primaryActionLabel;
@@ -46,7 +46,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'Review the customer’s dates and transport requirements.',
         nextStep: 'Accept the request or decline it with a short reason.',
         color: GariLinkColors.warning,
-        icon: Icons.notifications_active_outlined,
+        icon: GariLinkIcons.notification,
         group: OwnerRentalQueueGroup.needsAttention,
         primaryAction: OwnerRentalAction.accept,
         primaryActionLabel: 'Accept request',
@@ -59,7 +59,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'This request is waiting for your decision.',
         nextStep: 'Accept the request or decline it with a short reason.',
         color: GariLinkColors.warning,
-        icon: Icons.manage_search_rounded,
+        icon: GariLinkIcons.search,
         group: OwnerRentalQueueGroup.needsAttention,
         primaryAction: OwnerRentalAction.accept,
         primaryActionLabel: 'Accept request',
@@ -72,7 +72,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'The dates are reserved for this customer.',
         nextStep: 'Prepare the vehicle, then mark it ready for pickup.',
         color: GariLinkColors.success,
-        icon: Icons.check_circle_outline_rounded,
+        icon: GariLinkIcons.confirmed,
         group: OwnerRentalQueueGroup.upcoming,
         primaryAction: OwnerRentalAction.markReady,
         primaryActionLabel: 'Mark ready for pickup',
@@ -83,7 +83,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'The vehicle is prepared for the customer.',
         nextStep: 'Start the rental only when the handover takes place.',
         color: GariLinkColors.accent,
-        icon: Icons.key_rounded,
+        icon: GariLinkIcons.key,
         group: OwnerRentalQueueGroup.upcoming,
         primaryAction: OwnerRentalAction.start,
         primaryActionLabel: 'Start rental',
@@ -94,7 +94,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'The vehicle is currently with the customer.',
         nextStep: 'Complete the rental after the vehicle is returned.',
         color: GariLinkColors.accent,
-        icon: Icons.route_rounded,
+        icon: GariLinkIcons.route,
         group: OwnerRentalQueueGroup.active,
         primaryAction: OwnerRentalAction.complete,
         primaryActionLabel: 'Complete rental',
@@ -105,7 +105,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'This rental has finished and is kept for your records.',
         nextStep: 'No further action is required.',
         color: GariLinkColors.success,
-        icon: Icons.task_alt_rounded,
+        icon: GariLinkIcons.confirmed,
         group: OwnerRentalQueueGroup.history,
       ),
       'REJECTED' => const OwnerRentalStatusPresentation(
@@ -114,7 +114,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'This request was declined and cannot progress.',
         nextStep: 'No further action is required.',
         color: GariLinkColors.error,
-        icon: Icons.block_rounded,
+        icon: GariLinkIcons.cancelled,
         group: OwnerRentalQueueGroup.history,
       ),
       'CANCELLED' => const OwnerRentalStatusPresentation(
@@ -123,7 +123,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'The customer cancelled this request.',
         nextStep: 'No further action is required.',
         color: GariLinkColors.textMuted,
-        icon: Icons.cancel_outlined,
+        icon: GariLinkIcons.cancelled,
         group: OwnerRentalQueueGroup.history,
       ),
       _ => const OwnerRentalStatusPresentation(
@@ -132,7 +132,7 @@ OwnerRentalStatusPresentation ownerRentalStatusPresentation(String status) =>
         explanation: 'The latest rental status could not be understood.',
         nextStep: 'Refresh the request before taking action.',
         color: GariLinkColors.textMuted,
-        icon: Icons.info_outline_rounded,
+        icon: GariLinkIcons.info,
         group: OwnerRentalQueueGroup.history,
       ),
     };

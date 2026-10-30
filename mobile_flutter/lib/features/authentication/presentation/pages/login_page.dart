@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -71,8 +72,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
+          icon: GariIcon(
+            GariLinkIcons.back,
             color: isDark ? Colors.white : GariLinkColors.textPrimary,
           ),
           onPressed: () {

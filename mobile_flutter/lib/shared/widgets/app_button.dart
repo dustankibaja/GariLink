@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/radius.dart';
@@ -5,6 +6,7 @@ import '../../core/theme/dimensions.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
 import '../../core/theme/animations.dart';
+import 'press_feedback.dart';
 
 enum AppButtonVariant { primary, secondary, outline, danger, text }
 
@@ -15,7 +17,7 @@ class AppButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final AppButtonVariant variant;
   final bool isLoading;
-  final IconData? icon;
+  final GariIconData? icon;
 
   const AppButton({
     required this.text,
@@ -46,7 +48,7 @@ class AppButton extends StatelessWidget {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : Icon(
+                : GariIcon(
                     icon,
                     key: const ValueKey('icon'),
                     size: GariLinkDimensions.iconSmall,
@@ -78,7 +80,7 @@ class AppButton extends StatelessWidget {
             backgroundColor: WidgetStateProperty.resolveWith(
               (states) => states.contains(WidgetState.disabled)
                   ? scheme.onSurface.withValues(alpha: 0.12)
-                  : GariLinkColors.accent,
+                  : GariLinkColors.primary,
             ),
             foregroundColor: WidgetStateProperty.resolveWith(
               (states) => states.contains(WidgetState.disabled)
@@ -111,7 +113,7 @@ class AppButton extends StatelessWidget {
     return Semantics(
       liveRegion: isLoading,
       label: isLoading ? 'In progress' : null,
-      child: button,
+      child: PressFeedback(enabled: action != null, child: button),
     );
   }
 }

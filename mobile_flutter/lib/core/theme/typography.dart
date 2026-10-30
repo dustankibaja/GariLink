@@ -19,9 +19,9 @@ class GariLinkTypography {
       bodyLarge.copyWith(fontWeight: FontWeight.w700, height: 1.2);
   static TextStyle get price => GoogleFonts.inter(
     fontSize: 18,
-    fontWeight: FontWeight.w800,
+    fontWeight: FontWeight.w700,
     height: 1.2,
-    color: GariLinkColors.accent,
+    color: GariLinkColors.primary,
     fontFeatures: const [FontFeature.tabularFigures()],
   );
   static TextStyle get priceCompact => price.copyWith(fontSize: 14);
@@ -38,7 +38,8 @@ class GariLinkTypography {
   );
 
   static TextStyle get titleMedium => GoogleFonts.inter(
-    fontSize: 18,
+    fontSize: 20,
+    height: 1.3,
     fontWeight: FontWeight.w600,
     color: GariLinkColors.textPrimary,
   );
@@ -50,13 +51,14 @@ class GariLinkTypography {
   );
 
   static TextStyle get bodyMedium => GoogleFonts.inter(
-    fontSize: 14,
+    fontSize: 15,
+    height: 1.5,
     fontWeight: FontWeight.w400,
     color: GariLinkColors.textSecondary,
   );
 
   static TextStyle get bodySmall => GoogleFonts.inter(
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: FontWeight.w400,
     color: GariLinkColors.textSecondary,
   );
@@ -68,7 +70,7 @@ class GariLinkTypography {
   );
 
   static TextStyle get labelSmall => GoogleFonts.inter(
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: FontWeight.w600,
     color: GariLinkColors.textSecondary,
   );

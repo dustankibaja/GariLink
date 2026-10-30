@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +38,7 @@ class VehicleDetailsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (listingId.isEmpty) {
       return const _MessagePage(
-        icon: Icons.link_off_rounded,
+        icon: GariLinkIcons.linkOff,
         title: 'Vehicle link unavailable',
         message: 'This vehicle link is incomplete.',
       );
@@ -47,7 +48,7 @@ class VehicleDetailsPage extends ConsumerWidget {
         .when(
           loading: () => const _DetailsSkeleton(),
           error: (_, _) => _MessagePage(
-            icon: Icons.cloud_off_outlined,
+            icon: GariLinkIcons.cloudOff,
             title: 'Vehicle unavailable',
             message:
                 'Check your connection and try loading this vehicle again.',
@@ -149,7 +150,7 @@ class _ListingDetails extends StatelessWidget {
             leading: reviewAfterLogin
                 ? IconButton(
                     tooltip: 'Back to Explore',
-                    icon: const Icon(Icons.arrow_back),
+                    icon: const GariIcon(GariLinkIcons.back),
                     onPressed: () => context.go('/explore'),
                   )
                 : null,
@@ -182,9 +183,9 @@ class _ListingDetails extends StatelessWidget {
                   child: Text(
                     title,
                     style: const TextStyle(
-                      fontSize: 26,
+                      fontSize: 30,
                       height: 1.15,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
@@ -214,7 +215,7 @@ class _ListingDetails extends StatelessWidget {
                   ...fit.map(
                     (item) => Padding(
                       padding: const EdgeInsets.only(bottom: 10),
-                      child: _InfoRow(icon: Icons.check_rounded, text: item),
+                      child: _InfoRow(icon: GariLinkIcons.check, text: item),
                     ),
                   ),
                 ],
@@ -227,7 +228,7 @@ class _ListingDetails extends StatelessWidget {
                   const _Heading('Operating area'),
                   const SizedBox(height: 10),
                   _InfoRow(
-                    icon: Icons.location_on_outlined,
+                    icon: GariLinkIcons.location,
                     text: 'Operates around $locality',
                   ),
                 ],
@@ -241,7 +242,10 @@ class _ListingDetails extends StatelessWidget {
                   const SizedBox(height: 28),
                   const _Heading('Vehicle operator'),
                   const SizedBox(height: 10),
-                  _InfoRow(icon: Icons.business_outlined, text: operatorName!),
+                  _InfoRow(
+                    icon: GariLinkIcons.businessProfile,
+                    text: operatorName!,
+                  ),
                 ],
               ],
             ),
@@ -270,15 +274,15 @@ class _SuitabilityBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Icon(
-              Icons.check_circle_rounded,
+            const GariIcon(
+              GariLinkIcons.confirmed,
               color: GariLinkColors.success,
             ),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
                 text,
-                style: const TextStyle(fontWeight: FontWeight.w800),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -334,8 +338,8 @@ class _AvailabilityPanel extends StatelessWidget {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(
-          requestable ? Icons.event_available : Icons.schedule_outlined,
+        GariIcon(
+          requestable ? GariLinkIcons.bookings : GariLinkIcons.clock,
           color: requestable
               ? GariLinkColors.success
               : GariLinkColors.textSecondary,
@@ -347,7 +351,7 @@ class _AvailabilityPanel extends StatelessWidget {
             children: [
               Text(
                 _humanize(availability),
-                style: const TextStyle(fontWeight: FontWeight.w800),
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 4),
               Text(
@@ -378,7 +382,7 @@ class _PricingPanel extends StatelessWidget {
             style: const TextStyle(
               color: GariLinkColors.accent,
               fontSize: 20,
-              fontWeight: FontWeight.w800,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 6),
@@ -485,13 +489,13 @@ class _SpecificationGrid extends StatelessWidget {
 
 class _InfoRow extends StatelessWidget {
   const _InfoRow({required this.icon, required this.text});
-  final IconData icon;
+  final GariIconData icon;
   final String text;
   @override
   Widget build(BuildContext context) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Icon(icon, size: 20, color: GariLinkColors.accent),
+      GariIcon(icon, size: 20, color: GariLinkColors.accent),
       const SizedBox(width: 10),
       Expanded(child: Text(text)),
     ],
@@ -654,8 +658,8 @@ class _GalleryFallback extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            Icons.directions_car_filled_outlined,
+          GariIcon(
+            GariLinkIcons.vehicles,
             size: 68,
             color: GariLinkColors.textMuted,
           ),
@@ -675,7 +679,7 @@ class _Heading extends StatelessWidget {
     header: true,
     child: Text(
       text,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
     ),
   );
 }
@@ -694,7 +698,8 @@ class _RequestBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Material(
     color: Colors.white,
-    elevation: 8,
+    elevation: 0,
+    shape: const Border(top: BorderSide(color: GariLinkColors.border)),
     child: SafeArea(
       top: false,
       child: Padding(
@@ -815,8 +820,8 @@ class _SaveListingButtonState extends ConsumerState<_SaveListingButton> {
               dimension: 18,
               child: CircularProgressIndicator(strokeWidth: 2),
             )
-          : Icon(
-              saved ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+          : GariIcon(
+              saved ? GariLinkIcons.savedVehicles : GariLinkIcons.savedVehicles,
             ),
     );
   }
@@ -829,7 +834,7 @@ class _MessagePage extends StatelessWidget {
     required this.message,
     this.action,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final Widget? action;
@@ -842,9 +847,9 @@ class _MessagePage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 52),
+            GariIcon(icon, size: 52),
             const SizedBox(height: 16),
-            Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
+            Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
             const SizedBox(height: 6),
             Text(message, textAlign: TextAlign.center),
             if (action != null) ...[const SizedBox(height: 16), action!],

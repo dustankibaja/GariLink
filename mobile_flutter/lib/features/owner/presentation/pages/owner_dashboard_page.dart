@@ -22,7 +22,7 @@ class OwnerDashboardPage extends ConsumerWidget {
         child: operator.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => _Message(
-            icon: Icons.cloud_off_outlined,
+            icon: GariLinkIcons.cloudOff,
             title: 'Owner Home could not be loaded',
             message: userFacingError(error),
             onAction: () => refreshOperatorWorkspace(ref),
@@ -31,7 +31,7 @@ class OwnerDashboardPage extends ConsumerWidget {
             final workspace = state.selected;
             if (workspace == null) {
               return const _Message(
-                icon: Icons.business_outlined,
+                icon: GariLinkIcons.businessProfile,
                 title: 'Set up your owner workspace',
                 message:
                     'An authorized workspace is required before you can add vehicles and receive rental requests.',
@@ -81,14 +81,11 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.fromLTRB(20, 22, 20, 26),
+    margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+    padding: const EdgeInsets.all(24),
     decoration: const BoxDecoration(
-      gradient: LinearGradient(
-        colors: [GariLinkColors.primary, Color(0xFF163D6B)],
-      ),
-      borderRadius: BorderRadius.vertical(
-        bottom: Radius.circular(GariLinkRadius.card),
-      ),
+      color: GariLinkColors.primary,
+      borderRadius: BorderRadius.all(Radius.circular(GariLinkRadius.card)),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +96,7 @@ class _Header extends StatelessWidget {
             color: Colors.white.withValues(alpha: .75),
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 12),
         Text(
           workspace.name,
           style: GariLinkTypography.titleLarge.copyWith(color: Colors.white),
@@ -131,7 +128,7 @@ class _OperationalBody extends StatelessWidget {
     }
     if (listings.hasError || rentals.hasError) {
       return _Message(
-        icon: Icons.cloud_off_outlined,
+        icon: GariLinkIcons.cloudOff,
         title: 'Operational activity is unavailable',
         message: userFacingError(listings.error ?? rentals.error!),
       );
@@ -140,7 +137,7 @@ class _OperationalBody extends StatelessWidget {
     final rentalItems = rentals.valueOrNull ?? const [];
     if (vehicles.isEmpty) {
       return _Message(
-        icon: Icons.directions_car_outlined,
+        icon: GariLinkIcons.vehicles,
         title: 'Add your first vehicle',
         message:
             'Create a private vehicle draft, then add photos, location, pricing, availability, and publish when it is ready.',
@@ -226,7 +223,7 @@ class _OperationalBody extends StatelessWidget {
           children: [
             FilledButton.icon(
               onPressed: () => context.go('/my-vehicles'),
-              icon: const Icon(Icons.directions_car_outlined),
+              icon: const GariIcon(GariLinkIcons.vehicles),
               label: Text(
                 workspace.businessMode == WorkspaceBusinessMode.fleet
                     ? 'Manage fleet'
@@ -235,7 +232,7 @@ class _OperationalBody extends StatelessWidget {
             ),
             OutlinedButton.icon(
               onPressed: () => context.go('/incoming-requests'),
-              icon: const Icon(Icons.event_note_outlined),
+              icon: const GariIcon(GariLinkIcons.trips),
               label: const Text('Rental requests'),
             ),
           ],
@@ -255,13 +252,16 @@ class _Metric extends StatelessWidget {
     decoration: BoxDecoration(
       color: GariLinkColors.surface,
       borderRadius: GariLinkRadius.cardBorderRadius,
-      border: Border.all(color: GariLinkColors.borderLight),
+      border: Border.all(color: GariLinkColors.border),
     ),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('$value', style: GariLinkTypography.titleLarge),
+        Text(
+          '$value',
+          style: GariLinkTypography.display.copyWith(fontSize: 28),
+        ),
         Text(label, style: GariLinkTypography.bodySmall),
       ],
     ),
@@ -277,9 +277,9 @@ class _Attention extends StatelessWidget {
     color: GariLinkColors.warning.withValues(alpha: .10),
     borderRadius: GariLinkRadius.cardBorderRadius,
     child: ListTile(
-      leading: const Icon(Icons.build_circle_outlined),
+      leading: const GariIcon(GariLinkIcons.tools),
       title: Text(message),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const GariIcon(GariLinkIcons.chevronRight),
       onTap: onTap,
     ),
   );
@@ -293,7 +293,7 @@ class _Message extends StatelessWidget {
     this.actionLabel,
     this.onAction,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final String? actionLabel;
@@ -305,7 +305,7 @@ class _Message extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 48, color: GariLinkColors.textMuted),
+          GariIcon(icon, size: 48, color: GariLinkColors.textMuted),
           const SizedBox(height: GariLinkSpacing.md),
           Text(
             title,

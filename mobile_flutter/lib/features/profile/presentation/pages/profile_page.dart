@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +34,7 @@ class ProfilePage extends ConsumerWidget {
 
   Widget _buildUnauthenticatedProfile(BuildContext context) {
     return EmptyState(
-      icon: Icons.account_circle_outlined,
+      icon: GariLinkIcons.profile,
       title: 'Your GariLink profile',
       description: 'Sign in to manage your rentals, vehicles, and account.',
       actionLabel: 'Sign in',
@@ -60,7 +61,7 @@ class ProfilePage extends ConsumerWidget {
                   onPressed: ref.watch(authStateProvider).isLoading
                       ? null
                       : () => ref.read(authStateProvider.notifier).logout(),
-                  icon: const Icon(Icons.logout_rounded),
+                  icon: const GariIcon(GariLinkIcons.logout),
                   label: const Text('Sign out'),
                 ),
                 const SizedBox(height: GariLinkSpacing.xxl),
@@ -90,7 +91,13 @@ class ProfilePage extends ConsumerWidget {
         .map((part) => part.characters.first.toUpperCase())
         .join();
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: GariLinkSpacing.xxl),
+      margin: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: GariLinkColors.surface,
+        border: Border.all(color: GariLinkColors.border),
+        borderRadius: BorderRadius.circular(24),
+      ),
       width: double.infinity,
       child: Column(
         children: [
@@ -98,7 +105,7 @@ class ProfilePage extends ConsumerWidget {
             width: 72,
             height: 72,
             decoration: const BoxDecoration(
-              color: GariLinkColors.accent,
+              color: GariLinkColors.primary,
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,
@@ -128,8 +135,8 @@ class ProfilePage extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
-                  Icons.check_circle,
+                const GariIcon(
+                  GariLinkIcons.confirmed,
                   color: GariLinkColors.success,
                   size: 16,
                 ),
@@ -159,7 +166,7 @@ class ProfilePage extends ConsumerWidget {
       child: Column(
         children: [
           _buildMenuItem(
-            Icons.person_outline,
+            GariLinkIcons.profile,
             'Personal Information',
             onTap: () async {
               final user = ref.read(authStateProvider).user;
@@ -173,19 +180,19 @@ class ProfilePage extends ConsumerWidget {
             },
           ),
           _buildDivider(),
-          _buildMenuItem(Icons.credit_card_outlined, 'Payment Methods'),
+          _buildMenuItem(GariLinkIcons.payments, 'Payment Methods'),
           _buildDivider(),
           _buildMenuItem(
-            Icons.favorite_border,
+            GariLinkIcons.savedVehicles,
             'Saved Vehicles',
             onTap: () => context.push('/saved-vehicles'),
           ),
           _buildDivider(),
-          _buildMenuItem(Icons.notifications_outlined, 'Notifications'),
+          _buildMenuItem(GariLinkIcons.notification, 'Notifications'),
           _buildDivider(),
-          _buildMenuItem(Icons.help_outline, 'Help & Support'),
+          _buildMenuItem(GariLinkIcons.help, 'Help & Support'),
           _buildDivider(),
-          _buildMenuItem(Icons.settings_outlined, 'Settings', isLast: true),
+          _buildMenuItem(GariLinkIcons.engine, 'Settings', isLast: true),
         ],
       ),
     );
@@ -202,7 +209,7 @@ class ProfilePage extends ConsumerWidget {
   }
 
   Widget _buildMenuItem(
-    IconData icon,
+    GariIconData icon,
     String title, {
     bool isLast = false,
     VoidCallback? onTap,
@@ -231,7 +238,7 @@ class ProfilePage extends ConsumerWidget {
                   color: GariLinkColors.background,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Icon(icon, color: GariLinkColors.primary, size: 24),
+                child: GariIcon(icon, color: GariLinkColors.primary, size: 24),
               ),
               const SizedBox(width: GariLinkSpacing.md),
               Expanded(
@@ -244,8 +251,8 @@ class ProfilePage extends ConsumerWidget {
                   ),
                 ),
               ),
-              const Icon(
-                Icons.chevron_right,
+              const GariIcon(
+                GariLinkIcons.chevronRight,
                 color: GariLinkColors.textMuted,
                 size: 20,
               ),
@@ -281,8 +288,8 @@ class ProfilePage extends ConsumerWidget {
                     color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
-                    Icons.directions_car,
+                  child: const GariIcon(
+                    GariLinkIcons.vehicles,
                     color: Colors.white,
                     size: 24,
                   ),
@@ -311,8 +318,8 @@ class ProfilePage extends ConsumerWidget {
                     ],
                   ),
                 ),
-                const Icon(
-                  Icons.add_circle_outline,
+                const GariIcon(
+                  GariLinkIcons.addVehicle,
                   color: Colors.white,
                   size: 28,
                 ),

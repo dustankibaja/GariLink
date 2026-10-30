@@ -1,3 +1,5 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
+import 'helpers/find_gari_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -131,7 +133,7 @@ void main() {
     expect(find.text('Toyota Land Cruiser'), findsOneWidget);
     expect(find.text('TZS 125,000 / day'), findsOneWidget);
     expect(find.text('2022  •  Dar es Salaam'), findsOneWidget);
-    expect(find.byIcon(Icons.directions_car_filled_outlined), findsOneWidget);
+    expect(findGariIcon(GariLinkIcons.vehicles), findsOneWidget);
     expect(find.byTooltip('Save vehicle'), findsOneWidget);
     await tester.tap(find.text('Toyota Land Cruiser'));
     expect(tapped, isTrue);

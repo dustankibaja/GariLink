@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -56,8 +57,8 @@ class StatCard extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(
-                  trendUp! ? Icons.arrow_upward : Icons.arrow_downward,
+                GariIcon(
+                  trendUp! ? GariLinkIcons.arrowUp : GariLinkIcons.arrowDown,
                   size: 14,
                   color: trendUp! ? Colors.green : Colors.red,
                 ),

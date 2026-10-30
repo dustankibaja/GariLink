@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/colors.dart';
+import '../../core/theme/icons.dart';
 import '../../core/theme/spacing.dart';
 import '../../core/theme/typography.dart';
 
@@ -40,10 +41,16 @@ class AuthHeading extends StatelessWidget {
   Widget build(BuildContext context) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
+      const GariIcon(
+        GariLinkIcons.vehicles,
+        size: 32,
+        color: GariLinkColors.primary,
+      ),
+      const SizedBox(height: 16),
       Text(
         'GariLink',
         style: GariLinkTypography.labelMedium.copyWith(
-          color: GariLinkColors.accent,
+          color: GariLinkColors.primary,
         ),
       ),
       const SizedBox(height: GariLinkSpacing.xxl),

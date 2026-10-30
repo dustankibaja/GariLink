@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import '../../../location/domain/models/gari_location.dart';
 
@@ -53,7 +54,7 @@ class RentalLocationFormState extends State<RentalLocationForm> {
           decoration: const InputDecoration(
             labelText: 'Where should we meet?',
             hintText: 'e.g. Sinza',
-            prefixIcon: Icon(Icons.location_on_outlined),
+            prefixIcon: GariIcon(GariLinkIcons.location),
           ),
           validator: (value) =>
               value?.trim().isEmpty ?? true ? 'Enter a pickup locality' : null,
@@ -75,7 +76,7 @@ class RentalLocationFormState extends State<RentalLocationForm> {
           onChanged: (_) => widget.onChanged?.call(),
           decoration: const InputDecoration(
             labelText: 'Where are you going?',
-            prefixIcon: Icon(Icons.flag_outlined),
+            prefixIcon: GariIcon(GariLinkIcons.flag),
           ),
         ),
         const SizedBox(height: 8),

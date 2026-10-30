@@ -52,10 +52,7 @@ class _VehicleFallback extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const ColoredBox(
     color: GariLinkColors.neutral200,
-    child: Icon(
-      Icons.directions_car_filled_outlined,
-      color: GariLinkColors.textMuted,
-    ),
+    child: GariIcon(GariLinkIcons.vehicles, color: GariLinkColors.textMuted),
   );
 }
 
@@ -214,8 +211,8 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                         'Availability is confirmed by the owner when the request is approved',
                     child: const Row(
                       children: [
-                        Icon(
-                          Icons.verified_user_outlined,
+                        GariIcon(
+                          GariLinkIcons.verifiedBadge,
                           color: GariLinkColors.accent,
                         ),
                         SizedBox(width: 8),
@@ -248,7 +245,10 @@ class _BookingPageState extends ConsumerState<BookingPage> {
     return AppBar(
       centerTitle: false,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back, color: GariLinkColors.textPrimary),
+        icon: const GariIcon(
+          GariLinkIcons.back,
+          color: GariLinkColors.textPrimary,
+        ),
         onPressed: () => context.pop(),
       ),
       title: const Text("Rental request"),
@@ -368,7 +368,7 @@ class _BookingPageState extends ConsumerState<BookingPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                icon: const Icon(Icons.chevron_left),
+                icon: const GariIcon(GariLinkIcons.back),
                 onPressed: () {
                   final previous = DateTime(
                     visibleMonth.year,
@@ -401,7 +401,7 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.chevron_right),
+                icon: const GariIcon(GariLinkIcons.chevronRight),
                 onPressed: () => setState(() {
                   visibleMonth = DateTime(
                     visibleMonth.year,
@@ -690,7 +690,7 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.calculate_outlined),
+                : const GariIcon(GariLinkIcons.calculate),
             label: Text(_estimating ? 'Calculating…' : 'Check estimate'),
           ),
           const SizedBox(height: GariLinkSpacing.md),
@@ -834,8 +834,8 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                       context: context,
                       barrierDismissible: false,
                       builder: (dialogContext) => AlertDialog(
-                        icon: const Icon(
-                          Icons.check_circle,
+                        icon: const GariIcon(
+                          GariLinkIcons.confirmed,
                           color: GariLinkColors.success,
                           size: 48,
                         ),
@@ -872,7 +872,7 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                   }
                 },
           style: ElevatedButton.styleFrom(
-            backgroundColor: GariLinkColors.accent,
+            backgroundColor: GariLinkColors.primary,
             foregroundColor: Colors.white,
             elevation: 0,
             shape: RoundedRectangleBorder(

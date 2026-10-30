@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import '../../core/theme/colors.dart';
 import '../../core/theme/spacing.dart';
@@ -8,14 +9,14 @@ import 'app_button.dart';
 class EmptyState extends StatelessWidget {
   final String title;
   final String description;
-  final IconData icon;
+  final GariIconData icon;
   final String? actionLabel;
   final VoidCallback? onAction;
 
   const EmptyState({
     required this.title,
     required this.description,
-    this.icon = Icons.info_outline,
+    this.icon = GariLinkIcons.info,
     this.actionLabel,
     this.onAction,
     super.key,
@@ -32,7 +33,7 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            GariIcon(
               icon,
               size: GariLinkDimensions.emptyStateIcon,
               color: isDark

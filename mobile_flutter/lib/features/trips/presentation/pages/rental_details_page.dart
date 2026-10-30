@@ -83,7 +83,7 @@ class RentalDetailsPage extends StatelessWidget {
                     child: rental.vehicle.imageUrl == null
                         ? const ColoredBox(
                             color: GariLinkColors.neutral100,
-                            child: Icon(Icons.directions_car_rounded),
+                            child: GariIcon(GariLinkIcons.vehicles),
                           )
                         : CachedNetworkImage(
                             imageUrl: rental.vehicle.imageUrl!,
@@ -94,7 +94,7 @@ class RentalDetailsPage extends StatelessWidget {
                             ),
                             errorWidget: (_, _, _) => const ColoredBox(
                               color: GariLinkColors.neutral100,
-                              child: Icon(Icons.broken_image_outlined),
+                              child: GariIcon(GariLinkIcons.photo),
                             ),
                           ),
                   ),
@@ -110,7 +110,7 @@ class RentalDetailsPage extends StatelessWidget {
                         label: 'Rental status $statusLabel',
                         child: Chip(
                           label: Text(statusLabel),
-                          avatar: Icon(
+                          avatar: GariIcon(
                             statusIcon,
                             size: 18,
                             color: statusColor,
@@ -148,12 +148,8 @@ class RentalDetailsPage extends StatelessWidget {
           ],
           const SizedBox(height: GariLinkSpacing.lg),
           _section('Rental period', [
-            _row(Icons.calendar_month_outlined, 'Dates', dates),
-            _row(
-              Icons.nights_stay_outlined,
-              'Rental days',
-              '${rental.rentalDays}',
-            ),
+            _row(GariLinkIcons.trips, 'Dates', dates),
+            _row(GariLinkIcons.moon, 'Rental days', '${rental.rentalDays}'),
           ]),
           const SizedBox(height: GariLinkSpacing.lg),
           _section('Estimated rental price', [
@@ -178,10 +174,10 @@ class RentalDetailsPage extends StatelessWidget {
           if (ownerView && rental.customer != null) ...[
             const SizedBox(height: GariLinkSpacing.lg),
             _section('Customer details', [
-              _row(Icons.person_outline, 'Name', rental.customer!.displayName),
+              _row(GariLinkIcons.profile, 'Name', rental.customer!.displayName),
               if (rental.customer!.phoneNumber.isNotEmpty)
                 _row(
-                  Icons.phone_outlined,
+                  GariLinkIcons.phone,
                   'Contact number',
                   rental.customer!.phoneNumber,
                 ),
@@ -268,7 +264,7 @@ class RentalDetailsPage extends StatelessWidget {
               Expanded(
                 child: OutlinedButton.icon(
                   onPressed: onCancel,
-                  icon: const Icon(Icons.close),
+                  icon: const GariIcon(GariLinkIcons.close),
                   label: const Text('Cancel request'),
                 ),
               ),
@@ -294,12 +290,12 @@ class RentalDetailsPage extends StatelessWidget {
       ],
     ),
   );
-  Widget _row(IconData icon, String label, String value) => Padding(
+  Widget _row(GariIconData icon, String label, String value) => Padding(
     padding: const EdgeInsets.only(bottom: 12),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 20, color: GariLinkColors.accent),
+        GariIcon(icon, size: 20, color: GariLinkColors.accent),
         const SizedBox(width: 10),
         Expanded(
           child: Column(

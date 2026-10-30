@@ -20,7 +20,7 @@ class RentalStatusPresentation {
   final String explanation;
   final String nextStep;
   final Color color;
-  final IconData icon;
+  final GariIconData icon;
   final RentalLifecycleGroup group;
 }
 
@@ -32,7 +32,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'Your request was sent, but it is not confirmed yet.',
         nextStep: 'The owner needs to review your request.',
         color: GariLinkColors.warning,
-        icon: Icons.schedule_rounded,
+        icon: GariLinkIcons.clock,
         group: RentalLifecycleGroup.upcoming,
       ),
       'UNDER_REVIEW' => const RentalStatusPresentation(
@@ -42,7 +42,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
             'Your request is being considered and is not confirmed yet.',
         nextStep: 'You will see the owner’s decision here.',
         color: GariLinkColors.warning,
-        icon: Icons.manage_search_rounded,
+        icon: GariLinkIcons.search,
         group: RentalLifecycleGroup.upcoming,
       ),
       'APPROVED' => const RentalStatusPresentation(
@@ -51,7 +51,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'The owner accepted your dates for this vehicle.',
         nextStep: 'The owner will prepare the vehicle for your trip.',
         color: GariLinkColors.success,
-        icon: Icons.check_circle_outline_rounded,
+        icon: GariLinkIcons.confirmed,
         group: RentalLifecycleGroup.upcoming,
       ),
       'READY_FOR_PICKUP' => const RentalStatusPresentation(
@@ -60,7 +60,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'The owner has marked the vehicle ready for pickup.',
         nextStep: 'Follow the pickup arrangements agreed with the owner.',
         color: GariLinkColors.accent,
-        icon: Icons.key_rounded,
+        icon: GariLinkIcons.key,
         group: RentalLifecycleGroup.upcoming,
       ),
       'ACTIVE' => const RentalStatusPresentation(
@@ -69,7 +69,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'This vehicle is currently on your active rental.',
         nextStep: 'Return it according to the arrangements with the owner.',
         color: GariLinkColors.accent,
-        icon: Icons.route_rounded,
+        icon: GariLinkIcons.route,
         group: RentalLifecycleGroup.active,
       ),
       'COMPLETED' => const RentalStatusPresentation(
@@ -78,7 +78,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'This rental has been completed.',
         nextStep: 'The trip remains here for your records.',
         color: GariLinkColors.success,
-        icon: Icons.task_alt_rounded,
+        icon: GariLinkIcons.confirmed,
         group: RentalLifecycleGroup.past,
       ),
       'REJECTED' => const RentalStatusPresentation(
@@ -87,7 +87,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'The owner could not accept this rental request.',
         nextStep: 'You can explore another suitable vehicle.',
         color: GariLinkColors.error,
-        icon: Icons.block_rounded,
+        icon: GariLinkIcons.cancelled,
         group: RentalLifecycleGroup.past,
       ),
       'CANCELLED' => const RentalStatusPresentation(
@@ -96,7 +96,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'This rental request was cancelled.',
         nextStep: 'You can make a new request when you are ready.',
         color: GariLinkColors.textMuted,
-        icon: Icons.cancel_outlined,
+        icon: GariLinkIcons.cancelled,
         group: RentalLifecycleGroup.past,
       ),
       'EXPIRED' => const RentalStatusPresentation(
@@ -105,7 +105,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'This request is no longer active.',
         nextStep: 'Choose a vehicle and send a new request.',
         color: GariLinkColors.textMuted,
-        icon: Icons.timer_off_outlined,
+        icon: GariLinkIcons.timerOff,
         group: RentalLifecycleGroup.past,
       ),
       _ => const RentalStatusPresentation(
@@ -114,7 +114,7 @@ RentalStatusPresentation rentalStatusPresentation(String status) =>
         explanation: 'The latest rental status could not be understood.',
         nextStep: 'Refresh your trips to check for an update.',
         color: GariLinkColors.textMuted,
-        icon: Icons.info_outline_rounded,
+        icon: GariLinkIcons.info,
         group: RentalLifecycleGroup.past,
       ),
     };

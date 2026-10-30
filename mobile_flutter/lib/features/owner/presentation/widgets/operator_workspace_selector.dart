@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +23,7 @@ class OperatorWorkspaceSelector extends ConsumerWidget {
             isExpanded: true,
             decoration: const InputDecoration(
               labelText: 'Workspace',
-              prefixIcon: Icon(Icons.business_outlined),
+              prefixIcon: GariIcon(GariLinkIcons.businessProfile),
             ),
             items: value.available
                 .map(

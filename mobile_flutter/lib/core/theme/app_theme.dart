@@ -32,6 +32,50 @@ class AppTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       fontFamily: GoogleFonts.inter().fontFamily,
+      textTheme:
+          GoogleFonts.interTextTheme(
+            ThemeData(brightness: brightness).textTheme,
+          ).copyWith(
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              height: 1.5,
+              color: colorScheme.onSurface,
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 15,
+              height: 1.5,
+              color: colorScheme.onSurface,
+            ),
+            titleLarge: TextStyle(
+              fontSize: 26,
+              height: 1.2,
+              fontWeight: FontWeight.w600,
+              letterSpacing: -.7,
+              color: colorScheme.onSurface,
+            ),
+          ),
+      iconButtonTheme: IconButtonThemeData(
+        style: IconButton.styleFrom(
+          minimumSize: const Size(48, 48),
+          foregroundColor: colorScheme.onSurface,
+        ),
+      ),
+      listTileTheme: ListTileThemeData(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+        iconColor: colorScheme.onSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      searchBarTheme: SearchBarThemeData(
+        elevation: const WidgetStatePropertyAll(0),
+        backgroundColor: WidgetStatePropertyAll(colorScheme.surface),
+        side: const WidgetStatePropertyAll(
+          BorderSide(color: GariLinkColors.border),
+        ),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
+        constraints: const BoxConstraints(minHeight: 56),
+      ),
       scaffoldBackgroundColor: isDark
           ? GariLinkColors.darkSurface
           : GariLinkColors.background,
@@ -49,10 +93,10 @@ class AppTheme {
             ? GariLinkColors.darkText
             : GariLinkColors.textPrimary,
         elevation: 0,
-        scrolledUnderElevation: 1,
+        scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: GoogleFonts.inter(
-          fontSize: 18,
+          fontSize: 24,
           fontWeight: FontWeight.w600,
           color: isDark ? GariLinkColors.darkText : GariLinkColors.textPrimary,
         ),
@@ -115,10 +159,11 @@ class AppTheme {
         color: isDark
             ? GariLinkColors.darkSurfaceVariant
             : GariLinkColors.surface,
-        elevation: 2,
+        elevation: 0,
         shadowColor: GariLinkColors.primary.withValues(alpha: 0.08),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(GariLinkRadius.card),
+          side: const BorderSide(color: GariLinkColors.border),
         ),
         margin: const EdgeInsets.symmetric(
           horizontal: GariLinkSpacing.lg,
@@ -129,7 +174,7 @@ class AppTheme {
       // Elevated buttons
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: GariLinkColors.accent,
+          backgroundColor: GariLinkColors.primary,
           foregroundColor: Colors.white,
           minimumSize: const Size(
             double.infinity,
@@ -153,7 +198,7 @@ class AppTheme {
       // Outlined buttons
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: GariLinkColors.accent,
+          foregroundColor: GariLinkColors.accentDark,
           minimumSize: const Size(
             double.infinity,
             GariLinkDimensions.buttonHeight,
@@ -176,7 +221,7 @@ class AppTheme {
       // Text buttons
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
-          foregroundColor: GariLinkColors.accent,
+          foregroundColor: GariLinkColors.accentDark,
           textStyle: GoogleFonts.inter(
             fontSize: 14,
             fontWeight: FontWeight.w600,
@@ -200,11 +245,11 @@ class AppTheme {
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(GariLinkRadius.input),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: GariLinkColors.border),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(GariLinkRadius.input),
-          borderSide: BorderSide.none,
+          borderSide: const BorderSide(color: GariLinkColors.border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(GariLinkRadius.input),
@@ -253,11 +298,11 @@ class AppTheme {
         showUnselectedLabels: true,
         type: BottomNavigationBarType.fixed,
         selectedLabelStyle: GoogleFonts.inter(
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: FontWeight.w600,
         ),
         unselectedLabelStyle: GoogleFonts.inter(
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -279,10 +324,12 @@ class AppTheme {
 
       // FAB theme
       floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: GariLinkColors.accent,
+        backgroundColor: GariLinkColors.primary,
         foregroundColor: Colors.white,
         elevation: 4,
-        shape: CircleBorder(),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(18)),
+        ),
       ),
 
       // Divider
@@ -290,57 +337,6 @@ class AppTheme {
         color: GariLinkColors.border,
         thickness: 1,
         space: 1,
-      ),
-
-      // Text theme
-      textTheme: GoogleFonts.interTextTheme(
-        TextTheme(
-          displayLarge: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          displayMedium: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          headlineLarge: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          headlineMedium: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          titleLarge: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          titleMedium: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          bodyLarge: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkText
-                : GariLinkColors.textPrimary,
-          ),
-          bodyMedium: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkTextMuted
-                : GariLinkColors.textSecondary,
-          ),
-          bodySmall: TextStyle(
-            color: isDark
-                ? GariLinkColors.darkTextMuted
-                : GariLinkColors.textMuted,
-          ),
-        ),
       ),
     );
   }

@@ -77,7 +77,7 @@ class _IncomingRequestsPageState extends ConsumerState<IncomingRequestsPage>
         body: workspaces.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (_, _) => _OwnerMessage(
-            icon: Icons.cloud_off_outlined,
+            icon: GariLinkIcons.cloudOff,
             title: 'Workspaces could not be loaded',
             message: 'Check your connection and try again.',
             onRetry: () => refreshOperatorWorkspace(ref),
@@ -85,7 +85,7 @@ class _IncomingRequestsPageState extends ConsumerState<IncomingRequestsPage>
           data: (items) {
             if (items.isEmpty) {
               return const _OwnerMessage(
-                icon: Icons.business_outlined,
+                icon: GariLinkIcons.businessProfile,
                 title: 'No owner workspace yet',
                 message:
                     'Create an owner workspace before accepting rental requests.',
@@ -114,7 +114,7 @@ class _IncomingRequestsPageState extends ConsumerState<IncomingRequestsPage>
     return rentals.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (_, _) => _OwnerMessage(
-        icon: Icons.cloud_off_outlined,
+        icon: GariLinkIcons.cloudOff,
         title: 'Requests could not be loaded',
         message: 'Check your connection and try again.',
         onRetry: () => ref.invalidate(workspaceRentalsProvider(workspaceId)),
@@ -134,7 +134,7 @@ class _IncomingRequestsPageState extends ConsumerState<IncomingRequestsPage>
                 ref.refresh(workspaceRentalsProvider(workspaceId).future),
             child: filtered.isEmpty
                 ? _OwnerMessage(
-                    icon: Icons.event_note_outlined,
+                    icon: GariLinkIcons.trips,
                     title: const [
                       'No requests need attention',
                       'No upcoming rentals',
@@ -402,7 +402,11 @@ class _OwnerRentalCard extends StatelessWidget {
     ).format(estimatedAmount ?? 0);
     return Material(
       color: GariLinkColors.surface,
-      borderRadius: GariLinkRadius.cardBorderRadius,
+      shape: RoundedRectangleBorder(
+        borderRadius: GariLinkRadius.cardBorderRadius,
+        side: const BorderSide(color: GariLinkColors.border),
+      ),
+      clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: busy ? null : onOpen,
         borderRadius: GariLinkRadius.cardBorderRadius,
@@ -421,14 +425,14 @@ class _OwnerRentalCard extends StatelessWidget {
                       child: rental.vehicle.imageUrl == null
                           ? const ColoredBox(
                               color: GariLinkColors.neutral100,
-                              child: Icon(Icons.directions_car_rounded),
+                              child: GariIcon(GariLinkIcons.vehicles),
                             )
                           : Image.network(
                               rental.vehicle.imageUrl!,
                               fit: BoxFit.cover,
                               errorBuilder: (_, _, _) => const ColoredBox(
                                 color: GariLinkColors.neutral100,
-                                child: Icon(Icons.broken_image_outlined),
+                                child: GariIcon(GariLinkIcons.photo),
                               ),
                             ),
                     ),
@@ -484,17 +488,17 @@ class _OwnerRentalCard extends StatelessWidget {
               if (rental.transportNeed != null) ...[
                 const SizedBox(height: GariLinkSpacing.md),
                 _metadata(
-                  Icons.route_outlined,
+                  GariLinkIcons.route,
                   _needSummary(rental.transportNeed!),
                 ),
               ],
               if (rental.pickupLocation != null) ...[
                 const SizedBox(height: GariLinkSpacing.sm),
-                _metadata(Icons.location_on_outlined, _pickupSummary(rental)),
+                _metadata(GariLinkIcons.location, _pickupSummary(rental)),
               ],
               if (customer != null) ...[
                 const SizedBox(height: GariLinkSpacing.sm),
-                _metadata(Icons.person_outline, customer.displayName),
+                _metadata(GariLinkIcons.profile, customer.displayName),
               ],
               if (onApprove != null || primaryAction != null) ...[
                 const Divider(height: GariLinkSpacing.xxl),
@@ -537,10 +541,10 @@ class _OwnerRentalCard extends StatelessWidget {
     );
   }
 
-  Widget _metadata(IconData icon, String value) => Row(
+  Widget _metadata(GariIconData icon, String value) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Icon(icon, size: 18, color: GariLinkColors.textMuted),
+      GariIcon(icon, size: 18, color: GariLinkColors.textMuted),
       const SizedBox(width: GariLinkSpacing.sm),
       Expanded(child: Text(value, style: GariLinkTypography.bodySmall)),
     ],
@@ -575,7 +579,7 @@ class _OwnerMessage extends StatelessWidget {
     required this.message,
     this.onRetry,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final VoidCallback? onRetry;
@@ -586,7 +590,7 @@ class _OwnerMessage extends StatelessWidget {
     padding: const EdgeInsets.all(GariLinkSpacing.xxxl),
     children: [
       const SizedBox(height: 100),
-      Icon(icon, size: 56, color: GariLinkColors.textMuted),
+      GariIcon(icon, size: 56, color: GariLinkColors.textMuted),
       const SizedBox(height: GariLinkSpacing.lg),
       Text(
         title,
@@ -604,7 +608,7 @@ class _OwnerMessage extends StatelessWidget {
         Center(
           child: FilledButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh),
+            icon: const GariIcon(GariLinkIcons.refresh),
             label: const Text('Try again'),
           ),
         ),

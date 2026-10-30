@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class GariLinkDimensions {
   GariLinkDimensions._();
 
@@ -7,7 +9,10 @@ class GariLinkDimensions {
 
   static const double minTouchTarget = 48;
   static const double buttonHeight = 52;
-  static const double bottomNavigationHeight = 64;
+  static const double bottomNavigationHeight = 72;
+  static double navigationHeight(BuildContext context) =>
+      bottomNavigationHeight +
+      (MediaQuery.textScalerOf(context).scale(12) - 12).clamp(0, 24) * 2;
   static const double fieldMinHeight = 52;
 
   static const double iconSmall = 18;

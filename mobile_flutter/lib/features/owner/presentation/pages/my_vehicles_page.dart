@@ -37,7 +37,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
         floatingActionButton: supabaseOwnerToolsEnabled
             ? FloatingActionButton.extended(
                 onPressed: _addVehicle,
-                icon: const Icon(Icons.add),
+                icon: const GariIcon(GariLinkIcons.add),
                 label: const Text('Add vehicle'),
               )
             : null,
@@ -57,7 +57,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
                 ref,
                 workspaceId: workspaceContext.valueOrNull?.selectedId,
               ),
-              icon: const Icon(Icons.refresh_rounded),
+              icon: const GariIcon(GariLinkIcons.refresh),
             ),
           ],
           bottom: const TabBar(
@@ -73,7 +73,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
         body: workspaceContext.when(
           loading: () => const Center(child: CircularProgressIndicator()),
           error: (error, _) => _ListingMessage(
-            icon: Icons.cloud_off_outlined,
+            icon: GariLinkIcons.cloudOff,
             title: 'Vehicles could not be loaded',
             message: userFacingError(error),
             onRetry: () => refreshOperatorWorkspace(ref),
@@ -82,7 +82,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
             final workspace = workspaceState.selected;
             if (workspace == null) {
               return const _ListingMessage(
-                icon: Icons.business_outlined,
+                icon: GariLinkIcons.businessProfile,
                 title: 'Set up an owner workspace',
                 message:
                     'Create an owner workspace before adding your first vehicle.',
@@ -100,7 +100,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
                     loading: () =>
                         const Center(child: CircularProgressIndicator()),
                     error: (error, _) => _ListingMessage(
-                      icon: Icons.cloud_off_outlined,
+                      icon: GariLinkIcons.cloudOff,
                       title: 'Vehicles could not be loaded',
                       message: userFacingError(error),
                       onRetry: () => ref.invalidate(
@@ -133,7 +133,7 @@ class _MyVehiclesPageState extends ConsumerState<MyVehiclesPage> {
   Widget _listingList(List<Map<String, dynamic>> items) {
     if (items.isEmpty) {
       return const _ListingMessage(
-        icon: Icons.directions_car_outlined,
+        icon: GariLinkIcons.vehicles,
         title: 'No vehicles here',
         message:
             'Add a vehicle now, then configure photos, pricing, availability, and publication when ready.',
@@ -419,19 +419,16 @@ class _OwnerListingCard extends StatelessWidget {
         border: Border.all(color: GariLinkColors.borderLight),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          ClipRRect(
+            borderRadius: GariLinkRadius.inputBorderRadius,
+            child: SizedBox(height: 168, child: VehicleImage(url: image)),
+          ),
+          const SizedBox(height: GariLinkSpacing.lg),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: GariLinkRadius.inputBorderRadius,
-                child: SizedBox(
-                  width: 100,
-                  height: 90,
-                  child: VehicleImage(url: image),
-                ),
-              ),
-              const SizedBox(width: GariLinkSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -470,7 +467,7 @@ class _OwnerListingCard extends StatelessWidget {
                     Text(
                       listing['type'] == 'FOR_HIRE' ? '$money / day' : money,
                       style: GariLinkTypography.labelMedium.copyWith(
-                        color: GariLinkColors.accent,
+                        color: GariLinkColors.primary,
                       ),
                     ),
                     if (category != null || availability != null) ...[
@@ -519,7 +516,7 @@ class _OwnerListingCard extends StatelessWidget {
             children: [
               TextButton.icon(
                 onPressed: busy ? null : onPhotos,
-                icon: const Icon(Icons.photo_library_outlined),
+                icon: const GariIcon(GariLinkIcons.photo),
                 label: const Text('Photos'),
               ),
               if (availability != null && category != null)
@@ -536,13 +533,13 @@ class _OwnerListingCard extends StatelessWidget {
                       .toList(),
                   child: const Padding(
                     padding: EdgeInsets.all(8),
-                    child: Icon(Icons.event_available_outlined),
+                    child: GariIcon(GariLinkIcons.bookings),
                   ),
                 ),
               IconButton(
                 onPressed: busy ? null : onEdit,
                 tooltip: 'Edit listing',
-                icon: const Icon(Icons.edit_outlined),
+                icon: const GariIcon(GariLinkIcons.edit),
               ),
               if (busy)
                 const SizedBox.square(
@@ -551,6 +548,7 @@ class _OwnerListingCard extends StatelessWidget {
                 )
               else
                 PopupMenuButton<String>(
+                  icon: const GariIcon(GariLinkIcons.moreVert),
                   tooltip: 'Listing actions',
                   onSelected: onAction,
                   itemBuilder: (_) => [
@@ -602,7 +600,7 @@ class _ListingMessage extends StatelessWidget {
     required this.message,
     this.onRetry,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final VoidCallback? onRetry;
@@ -613,7 +611,7 @@ class _ListingMessage extends StatelessWidget {
     padding: const EdgeInsets.all(GariLinkSpacing.xxxl),
     children: [
       const SizedBox(height: 100),
-      Icon(icon, size: 56, color: GariLinkColors.textMuted),
+      GariIcon(icon, size: 56, color: GariLinkColors.textMuted),
       const SizedBox(height: GariLinkSpacing.lg),
       Text(
         title,
@@ -631,7 +629,7 @@ class _ListingMessage extends StatelessWidget {
         Center(
           child: OutlinedButton.icon(
             onPressed: onRetry,
-            icon: const Icon(Icons.refresh),
+            icon: const GariIcon(GariLinkIcons.refresh),
             label: const Text('Try again'),
           ),
         ),

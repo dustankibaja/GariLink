@@ -45,7 +45,10 @@ class VehicleCard extends StatelessWidget {
           '$displayTitle, $price${isRental ? ' per day' : ''}${metadata.isEmpty ? '' : ', $metadata'}',
       child: Material(
         color: GariLinkColors.surface,
-        borderRadius: GariLinkRadius.cardBorderRadius,
+        shape: RoundedRectangleBorder(
+          borderRadius: GariLinkRadius.cardBorderRadius,
+          side: const BorderSide(color: GariLinkColors.border),
+        ),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
@@ -74,34 +77,25 @@ class VehicleCard extends StatelessWidget {
                     ),
                   ],
                 )
-              : Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SizedBox(
-                      width:
-                          MediaQuery.sizeOf(context).width <=
-                              GariLinkDimensions.compactPhone
-                          ? 112
-                          : 132,
-                      child: _Photo(
-                        listing: listing,
-                        title: displayTitle,
-                        height: 132,
-                        saved: saved,
-                        saving: saving,
-                        onSaved: onSaved,
-                      ),
+                    _Photo(
+                      listing: listing,
+                      title: displayTitle,
+                      height: 204,
+                      saved: saved,
+                      saving: saving,
+                      onSaved: onSaved,
                     ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(GariLinkSpacing.md),
-                        child: _Details(
-                          title: displayTitle,
-                          metadata: metadata,
-                          mileage: mileage,
-                          price: price,
-                          isRental: isRental,
-                        ),
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: _Details(
+                        title: displayTitle,
+                        metadata: metadata,
+                        mileage: mileage,
+                        price: price,
+                        isRental: isRental,
                       ),
                     ),
                   ],
@@ -171,6 +165,14 @@ class _Photo extends StatelessWidget {
             button: true,
             label: saved == true ? 'Remove saved vehicle' : 'Save vehicle',
             child: IconButton.filledTonal(
+              style: IconButton.styleFrom(
+                backgroundColor: saved == true
+                    ? GariLinkColors.primary
+                    : Colors.white,
+                foregroundColor: saved == true
+                    ? Colors.white
+                    : GariLinkColors.primary,
+              ),
               tooltip: saved == true ? 'Remove from saved' : 'Save vehicle',
               onPressed: saving ? null : onSaved,
               icon: AnimatedSwitcher(
@@ -188,10 +190,10 @@ class _Photo extends StatelessWidget {
                         dimension: 17,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : Icon(
+                    : GariIcon(
                         saved == true
-                            ? Icons.favorite_rounded
-                            : Icons.favorite_border_rounded,
+                            ? GariLinkIcons.savedVehicles
+                            : GariLinkIcons.savedVehicles,
                         key: ValueKey(saved == true),
                       ),
               ),
@@ -228,7 +230,7 @@ class _Details extends StatelessWidget {
         maxLines: compact ? 1 : 2,
         overflow: TextOverflow.ellipsis,
         style: GariLinkTypography.bodyLarge.copyWith(
-          fontWeight: FontWeight.w800,
+          fontWeight: FontWeight.w600,
           height: 1.15,
         ),
       ),
@@ -258,8 +260,8 @@ class _Details extends StatelessWidget {
           '$price${isRental ? ' / day' : ''}',
           maxLines: 2,
           style: GariLinkTypography.labelMedium.copyWith(
-            color: GariLinkColors.accent,
-            fontWeight: FontWeight.w800,
+            color: GariLinkColors.primary,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

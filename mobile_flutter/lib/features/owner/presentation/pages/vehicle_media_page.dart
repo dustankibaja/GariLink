@@ -206,7 +206,7 @@ class _VehicleMediaPageState extends ConsumerState<VehicleMediaPage> {
                     dimension: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Icon(Icons.add_photo_alternate_outlined),
+                : const GariIcon(GariLinkIcons.addPhoto),
             label: Text(
               _count >= vehicleMediaMaxCount
                   ? '10-photo limit reached'
@@ -255,7 +255,7 @@ class _VehicleMediaPageState extends ConsumerState<VehicleMediaPage> {
                       await _upload(photo);
                     }
                   },
-            icon: const Icon(Icons.cloud_upload_outlined),
+            icon: const GariIcon(GariLinkIcons.upload),
             label: Text(
               'Upload ${_pending.length} selected photo${_pending.length == 1 ? '' : 's'}',
             ),
@@ -278,8 +278,8 @@ class _EmptyMedia extends StatelessWidget {
     child: const Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(
-          Icons.directions_car_filled_outlined,
+        GariIcon(
+          GariLinkIcons.vehicles,
           size: 54,
           color: GariLinkColors.textMuted,
         ),
@@ -325,7 +325,7 @@ class _RemoteTile extends StatelessWidget {
             ),
             errorWidget: (_, _, _) => const ColoredBox(
               color: GariLinkColors.neutral100,
-              child: Icon(Icons.broken_image_outlined),
+              child: GariIcon(GariLinkIcons.photo),
             ),
           ),
         ),
@@ -351,7 +351,7 @@ class _RemoteTile extends StatelessWidget {
                     IconButton(
                       tooltip: 'Remove photo ${index + 1}',
                       onPressed: busy ? null : onDelete,
-                      icon: const Icon(Icons.delete_outline),
+                      icon: const GariIcon(GariLinkIcons.delete),
                     ),
                   ],
                 ),
@@ -418,7 +418,7 @@ class _PendingTile extends StatelessWidget {
                       IconButton(
                         tooltip: 'Remove selected photo',
                         onPressed: onRemove,
-                        icon: const Icon(Icons.close),
+                        icon: const GariIcon(GariLinkIcons.close),
                       ),
                     ],
                   ),

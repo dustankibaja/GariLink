@@ -32,7 +32,7 @@ class SavedVehiclesPage extends ConsumerWidget {
               SizedBox(
                 height: MediaQuery.sizeOf(context).height * .65,
                 child: _SavedState(
-                  icon: Icons.cloud_off_outlined,
+                  icon: GariLinkIcons.cloudOff,
                   title: 'Saved vehicles could not be loaded',
                   message: 'Check your connection and try again.',
                   action: 'Try again',
@@ -48,7 +48,7 @@ class SavedVehiclesPage extends ConsumerWidget {
                     SizedBox(
                       height: MediaQuery.sizeOf(context).height * .65,
                       child: _SavedState(
-                        icon: Icons.favorite_border_rounded,
+                        icon: GariLinkIcons.savedVehicles,
                         title: 'No saved vehicles yet',
                         message:
                             'Save vehicles while browsing to compare them later.',
@@ -106,7 +106,7 @@ class _SavedState extends StatelessWidget {
     required this.action,
     required this.onAction,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final String action;
@@ -119,7 +119,7 @@ class _SavedState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 56, color: GariLinkColors.textMuted),
+          GariIcon(icon, size: 56, color: GariLinkColors.textMuted),
           const SizedBox(height: 16),
           Text(
             title,

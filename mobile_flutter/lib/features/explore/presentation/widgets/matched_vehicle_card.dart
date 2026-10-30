@@ -70,7 +70,7 @@ class MatchedVehicleCard extends StatelessWidget {
                       left: 12,
                       bottom: 12,
                       child: _OverlayLabel(
-                        icon: Icons.near_me_outlined,
+                        icon: GariLinkIcons.navigation,
                         text: distance,
                       ),
                     ),
@@ -112,8 +112,8 @@ class MatchedVehicleCard extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.check_circle_outline_rounded,
+                        const GariIcon(
+                          GariLinkIcons.confirmed,
                           size: 20,
                           color: GariLinkColors.success,
                         ),
@@ -181,10 +181,8 @@ class _AvailabilityBadge extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                available
-                    ? Icons.check_circle_outline
-                    : Icons.schedule_outlined,
+              GariIcon(
+                available ? GariLinkIcons.confirmed : GariLinkIcons.clock,
                 size: 15,
                 color: available
                     ? GariLinkColors.success
@@ -212,7 +210,7 @@ class _AvailabilityBadge extends StatelessWidget {
 
 class _OverlayLabel extends StatelessWidget {
   const _OverlayLabel({required this.icon, required this.text});
-  final IconData icon;
+  final GariIconData icon;
   final String text;
   @override
   Widget build(BuildContext context) => DecoratedBox(
@@ -225,7 +223,7 @@ class _OverlayLabel extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 15, color: Colors.white),
+          GariIcon(icon, size: 15, color: Colors.white),
           const SizedBox(width: 5),
           Text(
             text,

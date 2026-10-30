@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/services/storage_service.dart';
@@ -44,20 +45,20 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
     OnboardingItem(
       title: 'Find Cars\nAnywhere',
       subtitle: 'Rent nearby vehicles in minutes.',
-      icon: Icons.map_outlined,
+      icon: GariLinkIcons.map,
       visualPainter: OnboardingMapPainter(),
     ),
     OnboardingItem(
       title: 'Turn your vehicle\ninto income',
       subtitle: 'Rent your vehicle and start earning.',
-      icon: Icons.monetization_on_outlined,
+      icon: GariLinkIcons.earnings,
       visualPainter: OnboardingEarnPainter(),
     ),
     OnboardingItem(
       title: 'Plan your next\njourney',
       subtitle:
           'Explore vehicles, compare options and manage your rental requests.',
-      icon: Icons.explore_outlined,
+      icon: GariLinkIcons.explore,
       visualPainter: OnboardingMapPainter(),
     ),
   ];
@@ -227,7 +228,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
 class OnboardingItem {
   final String title;
   final String subtitle;
-  final IconData icon;
+  final GariIconData icon;
   final CustomPainter visualPainter;
 
   OnboardingItem({

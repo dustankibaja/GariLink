@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -30,7 +31,11 @@ class RatingWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Icon(Icons.star, size: iconSize, color: const Color(0xFFFFC107)),
+        GariIcon(
+          GariLinkIcons.starFilled,
+          size: iconSize,
+          color: const Color(0xFFFFC107),
+        ),
         const SizedBox(width: 4),
         Text(
           rating.toStringAsFixed(1),

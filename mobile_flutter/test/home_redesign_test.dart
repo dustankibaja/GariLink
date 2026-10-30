@@ -201,7 +201,7 @@ void main() {
     final selectedSurface = tester.widget<AnimatedContainer>(
       find.byKey(const Key('home-purpose-surface-Personal trip')),
     );
-    expect(selectedSurface.duration, const Duration(milliseconds: 220));
+    expect(selectedSurface.duration, const Duration(milliseconds: 240));
 
     final deliver = find.byKey(const Key('home-purpose-Deliver goods'));
     await tester.ensureVisible(deliver);

@@ -28,6 +28,7 @@ class GariLinkAnimations {
     return PageRouteBuilder<T>(
       pageBuilder: (context, animation, secondaryAnimation) => page,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        if (reduceMotion(context)) return child;
         return FadeTransition(opacity: animation, child: child);
       },
       transitionDuration: standard,

@@ -1,3 +1,4 @@
+import 'package:garilink_mobile/core/theme/icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/colors.dart';
@@ -11,8 +12,8 @@ class AppTextField extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool isPassword;
   final TextInputType keyboardType;
-  final IconData? prefixIcon;
-  final IconData? suffixIcon;
+  final GariIconData? prefixIcon;
+  final GariIconData? suffixIcon;
   final VoidCallback? onSuffixTap;
   final String? suffixTooltip;
   final Iterable<String>? autofillHints;
@@ -62,10 +63,10 @@ class _AppTextFieldState extends State<AppTextField> {
       if (widget.isPassword) {
         return IconButton(
           tooltip: _obscureText ? 'Show password' : 'Hide password',
-          icon: Icon(
+          icon: GariIcon(
             _obscureText
-                ? Icons.visibility_off_outlined
-                : Icons.visibility_outlined,
+                ? GariLinkIcons.visibilityOff
+                : GariLinkIcons.visibility,
             color: isDark
                 ? GariLinkColors.textMuted
                 : GariLinkColors.textSecondary,
@@ -82,7 +83,7 @@ class _AppTextFieldState extends State<AppTextField> {
         return IconButton(
           tooltip: widget.suffixTooltip,
           onPressed: widget.onSuffixTap,
-          icon: Icon(
+          icon: GariIcon(
             widget.suffixIcon,
             color: isDark
                 ? GariLinkColors.textMuted
@@ -130,7 +131,7 @@ class _AppTextFieldState extends State<AppTextField> {
                   : GariLinkColors.textSecondary.withValues(alpha: 0.6),
             ),
             prefixIcon: widget.prefixIcon != null
-                ? Icon(
+                ? GariIcon(
                     widget.prefixIcon,
                     color: isDark
                         ? GariLinkColors.textMuted

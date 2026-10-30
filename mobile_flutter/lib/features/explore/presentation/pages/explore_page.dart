@@ -191,7 +191,7 @@ class _NearbyDiscoveryPanelState extends ConsumerState<NearbyDiscoveryPanel> {
             ..._searchAreas.map(
               (area) => ListTile(
                 minVerticalPadding: 12,
-                leading: const Icon(Icons.location_on_outlined),
+                leading: const GariIcon(GariLinkIcons.location),
                 title: Text(area.city!),
                 onTap: () => Navigator.pop(sheetContext, area),
               ),
@@ -242,22 +242,23 @@ class _NearbyDiscoveryPanelState extends ConsumerState<NearbyDiscoveryPanel> {
             const SizedBox(height: 10),
             Wrap(
               spacing: 8,
+              runSpacing: 8,
               children: [
                 OutlinedButton.icon(
                   onPressed: _useCurrentLocation,
-                  icon: const Icon(Icons.my_location_outlined),
+                  icon: const GariIcon(GariLinkIcons.myLocation),
                   label: const Text('Use my location'),
                 ),
                 OutlinedButton.icon(
                   onPressed: _chooseManually,
-                  icon: const Icon(Icons.edit_location_alt_outlined),
+                  icon: const GariIcon(GariLinkIcons.location),
                   label: Text(label.isEmpty ? 'Choose an area' : 'Change area'),
                 ),
               ],
             ),
             TextButton.icon(
               onPressed: _chooseTransportNeed,
-              icon: const Icon(Icons.tune_outlined),
+              icon: const GariIcon(GariLinkIcons.filter),
               label: Text(
                 _transportNeed == null
                     ? 'Add transport requirements'
@@ -323,7 +324,7 @@ class _NearbyDiscoveryPanelState extends ConsumerState<NearbyDiscoveryPanel> {
                             nearby.listing['vehicle'] as Map? ?? const {};
                         return ListTile(
                           contentPadding: EdgeInsets.zero,
-                          leading: const Icon(Icons.directions_car_outlined),
+                          leading: const GariIcon(GariLinkIcons.vehicles),
                           title: Text(
                             '${vehicle['make'] ?? 'Vehicle'} ${vehicle['model'] ?? ''}'
                                 .trim(),
@@ -575,7 +576,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                 (sort) => ListTile(
                   title: Text(sort.label),
                   trailing: sort == _query.sort
-                      ? const Icon(Icons.check_rounded)
+                      ? const GariIcon(GariLinkIcons.check)
                       : null,
                   onTap: () => Navigator.pop(context, sort),
                 ),
@@ -619,7 +620,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                     child: IconButton(
                       tooltip: 'Sort: ${_query.sort.label}',
                       onPressed: _openSort,
-                      icon: const Icon(Icons.swap_vert_rounded),
+                      icon: const GariIcon(GariLinkIcons.sort),
                     ),
                   ),
                 ],
@@ -630,7 +631,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                   child: SearchBar(
                     controller: _search,
                     hintText: 'Search make, model or location',
-                    leading: const Icon(Icons.search_rounded),
+                    leading: const GariIcon(GariLinkIcons.search),
                     onChanged: _onSearch,
                     trailing: [
                       if (_search.text.isNotEmpty)
@@ -642,7 +643,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                             _debounce?.cancel();
                             _setQuery(_query.copyWith(text: ''));
                           },
-                          icon: const Icon(Icons.close_rounded),
+                          icon: const GariIcon(GariLinkIcons.close),
                         ),
                       Badge(
                         isLabelVisible: _query.filterCount > 0,
@@ -650,7 +651,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                         child: IconButton(
                           tooltip: 'Filter vehicles',
                           onPressed: _openFilters,
-                          icon: const Icon(Icons.tune_rounded),
+                          icon: const GariIcon(GariLinkIcons.filter),
                         ),
                       ),
                     ],
@@ -704,7 +705,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: _MarketplaceState(
-                    icon: Icons.cloud_off_outlined,
+                    icon: GariLinkIcons.cloudOff,
                     title: 'Vehicles could not be loaded',
                     message: 'Check your connection and try again.',
                     action: 'Try again',
@@ -716,7 +717,7 @@ class _ExplorePageState extends ConsumerState<ExplorePage>
                 SliverFillRemaining(
                   hasScrollBody: false,
                   child: _MarketplaceState(
-                    icon: Icons.search_off_rounded,
+                    icon: GariLinkIcons.searchOff,
                     title: _query.text.isNotEmpty || _query.hasFilters
                         ? 'No matching vehicles'
                         : 'No vehicles available yet',
@@ -923,7 +924,7 @@ class _FilterSheetState extends State<_FilterSheet> {
             decoration: const InputDecoration(
               labelText: 'Location',
               hintText: 'For example, Dar es Salaam',
-              prefixIcon: Icon(Icons.location_on_outlined),
+              prefixIcon: GariIcon(GariLinkIcons.location),
             ),
             onChanged: (value) => location = value.trim(),
           ),
@@ -1023,7 +1024,7 @@ class _MarketplaceState extends StatelessWidget {
     this.action,
     required this.onAction,
   });
-  final IconData icon;
+  final GariIconData icon;
   final String title;
   final String message;
   final String? action;
@@ -1036,7 +1037,7 @@ class _MarketplaceState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 54, color: GariLinkColors.textMuted),
+          GariIcon(icon, size: 54, color: GariLinkColors.textMuted),
           const SizedBox(height: 14),
           Text(
             title,

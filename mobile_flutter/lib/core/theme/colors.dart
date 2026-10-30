@@ -9,9 +9,9 @@ class GariLinkColors {
   static const Color accent = Color(0xFF2D7FF9);
 
   // Semantic
-  static const Color success = Color(0xFF00C853);
-  static const Color warning = Color(0xFFFF9800);
-  static const Color error = Color(0xFFF44336);
+  static const Color success = Color(0xFF15803D);
+  static const Color warning = Color(0xFFA16207);
+  static const Color error = Color(0xFFB91C1C);
   static const Color info = Color(0xFF2563EB);
   static const Color disabled = Color(0xFFCBD5E1);
 
@@ -24,7 +24,7 @@ class GariLinkColors {
   // Text
   static const Color textPrimary = Color(0xFF0F172A);
   static const Color textSecondary = Color(0xFF64748B);
-  static const Color textMuted = Color(0xFF94A3B8);
+  static const Color textMuted = Color(0xFF64748B);
   static const Color textInverse = Color(0xFFFFFFFF);
 
   // Borders & Dividers
@@ -57,9 +57,9 @@ class GariLinkColors {
 
   // Chart colors
   static const Color chartBlue = Color(0xFF2D7FF9);
-  static const Color chartGreen = Color(0xFF00C853);
+  static const Color chartGreen = Color(0xFF15803D);
   static const Color chartPurple = Color(0xFF8B5CF6);
-  static const Color chartOrange = Color(0xFFFF9800);
+  static const Color chartOrange = Color(0xFFA16207);
 
   // Status colors (with backgrounds)
   static const Color successBg = Color(0xFFE8F5E9);
