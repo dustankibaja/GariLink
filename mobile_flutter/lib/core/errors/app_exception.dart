@@ -35,6 +35,11 @@ class ServerException extends AppException {
   const ServerException(super.message, {super.code}) : super(statusCode: 500);
 }
 
+/// The build has no usable API endpoint (development misconfiguration).
+class ConfigurationException extends AppException {
+  const ConfigurationException(super.message);
+}
+
 class ValidationException extends AppException {
   const ValidationException(super.message, {super.code})
     : super(statusCode: 400);

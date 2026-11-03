@@ -224,7 +224,7 @@ void main() {
           ),
         ),
       );
-      await tester.ensureVisible(find.text('Long-distance travel'));
+      await tester.ensureVisible(find.text('Heavy cargo'));
       expect(tester.takeException(), isNull);
       expect(find.text('What do you need transport for?'), findsOneWidget);
     });
@@ -243,5 +243,68 @@ void main() {
     );
     await tester.ensureVisible(find.text('Heavy cargo'));
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('booking and explore offer only the five primary purposes', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(child: TransportNeedForm()),
+        ),
+      ),
+    );
+    for (final title in [
+      'Personal trip',
+      'Group travel',
+      'Deliver goods',
+      'Moving goods',
+      'Heavy cargo',
+    ]) {
+      expect(find.byKey(Key('purpose-chip-$title')), findsOneWidget);
+    }
+    expect(find.byType(ChoiceChip), findsNWidgets(5));
+    expect(find.text('Airport transfer'), findsNothing);
+    expect(find.text('Business transport'), findsNothing);
+    expect(find.text('City travel'), findsNothing);
+  });
+
+  testWidgets('grouped purpose asks for the detailed choice', (tester) async {
+    final key = GlobalKey<TransportNeedFormState>();
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(child: TransportNeedForm(key: key)),
+        ),
+      ),
+    );
+    await tester.tap(find.byKey(const Key('purpose-chip-Heavy cargo')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Regional cargo'));
+    await tester.pumpAndSettle();
+    expect(key.currentState!.need!.purpose, TransportPurpose.regionalCargo);
+  });
+
+  testWidgets('a saved legacy purpose is preserved, not rewritten', (
+    tester,
+  ) async {
+    final key = GlobalKey<TransportNeedFormState>();
+    const initial = TransportNeed(
+      purpose: TransportPurpose.airportTransfer,
+      passengerCount: 2,
+    );
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: SingleChildScrollView(
+            child: TransportNeedForm(key: key, initialNeed: initial),
+          ),
+        ),
+      ),
+    );
+    expect(find.text('Current choice: Airport transfer'), findsOneWidget);
+    expect(key.currentState!.need!.purpose, TransportPurpose.airportTransfer);
+    expect(key.currentState!.need!.passengerCount, 2);
   });
 }

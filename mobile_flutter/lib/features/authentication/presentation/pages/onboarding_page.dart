@@ -44,7 +44,7 @@ class _OnboardingPageState extends ConsumerState<OnboardingPage> {
   final List<OnboardingItem> _items = [
     OnboardingItem(
       title: 'Find Cars\nAnywhere',
-      subtitle: 'Rent nearby vehicles in minutes.',
+      subtitle: 'Find and request nearby vehicles.',
       icon: GariLinkIcons.map,
       visualPainter: OnboardingMapPainter(),
     ),

@@ -30,7 +30,7 @@ void main() {
 
     // Verify Onboarding Page 1 is loaded
     expect(find.text('Find Cars\nAnywhere'), findsOneWidget);
-    expect(find.text('Rent nearby vehicles in minutes.'), findsOneWidget);
+    expect(find.text('Find and request nearby vehicles.'), findsOneWidget);
 
     // Tap "Next" to transition to Onboarding Page 2
     await tester.tap(find.text('Next'));

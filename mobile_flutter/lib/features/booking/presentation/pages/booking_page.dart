@@ -57,8 +57,9 @@ class _VehicleFallback extends StatelessWidget {
 }
 
 class _BookingPageState extends ConsumerState<BookingPage> {
-  int? selectedStart;
-  int? selectedEnd;
+  /// Local calendar days (midnight). A range may span several months.
+  DateTime? selectedStart;
+  DateTime? selectedEnd;
   late DateTime visibleMonth;
   final _notesController = TextEditingController();
   final _retryRequest = RentalRetryRequest();
@@ -78,24 +79,17 @@ class _BookingPageState extends ConsumerState<BookingPage> {
   void initState() {
     super.initState();
     final now = DateTime.now();
-    visibleMonth = DateTime(now.year, now.month + 1);
+    visibleMonth = DateTime(now.year, now.month);
   }
 
   int get rentalDays {
-    if (selectedStart == null || selectedEnd == null) return 0;
-    return DateTime(visibleMonth.year, visibleMonth.month, selectedEnd!)
-        .difference(
-          DateTime(visibleMonth.year, visibleMonth.month, selectedStart!),
-        )
-        .inDays;
+    final start = selectedStart, end = selectedEnd;
+    if (start == null || end == null) return 0;
+    return rentalDayCount(start, end);
   }
 
-  DateTime? get _startDate => selectedStart == null
-      ? null
-      : DateTime(visibleMonth.year, visibleMonth.month, selectedStart!);
-  DateTime? get _endDate => selectedEnd == null
-      ? null
-      : DateTime(visibleMonth.year, visibleMonth.month, selectedEnd!);
+  DateTime? get _startDate => selectedStart;
+  DateTime? get _endDate => selectedEnd;
 
   Future<void> _requestEstimate() async {
     if (_startDate == null || _endDate == null) return;
@@ -368,6 +362,8 @@ class _BookingPageState extends ConsumerState<BookingPage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
+                key: const Key('calendar-previous-month'),
+                tooltip: 'Previous month',
                 icon: const GariIcon(GariLinkIcons.back),
                 onPressed: () {
                   final previous = DateTime(
@@ -381,9 +377,6 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                   if (!previous.isBefore(current)) {
                     setState(() {
                       visibleMonth = previous;
-                      selectedStart = null;
-                      selectedEnd = null;
-                      _invalidateEstimate();
                     });
                   }
                 },
@@ -401,15 +394,14 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                 ),
               ),
               IconButton(
+                key: const Key('calendar-next-month'),
+                tooltip: 'Next month',
                 icon: const GariIcon(GariLinkIcons.chevronRight),
                 onPressed: () => setState(() {
                   visibleMonth = DateTime(
                     visibleMonth.year,
                     visibleMonth.month + 1,
                   );
-                  selectedStart = null;
-                  selectedEnd = null;
-                  _invalidateEstimate();
                 }),
                 color: GariLinkColors.textSecondary,
               ),
@@ -475,21 +467,22 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                 return const SizedBox();
               }
 
-              bool isStart = dayNumber == selectedStart;
-              bool isEnd = dayNumber == selectedEnd;
-              bool isInRange =
-                  selectedStart != null &&
-                  selectedEnd != null &&
-                  dayNumber > selectedStart! &&
-                  dayNumber < selectedEnd!;
-
-              BoxDecoration? decoration;
-              Color textColor = GariLinkColors.textPrimary;
               final date = DateTime(
                 visibleMonth.year,
                 visibleMonth.month,
                 dayNumber,
               );
+              final start = selectedStart, end = selectedEnd;
+              bool isStart = start != null && DateUtils.isSameDay(date, start);
+              bool isEnd = end != null && DateUtils.isSameDay(date, end);
+              bool isInRange =
+                  start != null &&
+                  end != null &&
+                  date.isAfter(start) &&
+                  date.isBefore(end);
+
+              BoxDecoration? decoration;
+              Color textColor = GariLinkColors.textPrimary;
               final today = DateTime.now();
               final disabled = !date.isAfter(
                 DateTime(today.year, today.month, today.day),
@@ -517,22 +510,16 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                       ? null
                       : () {
                           setState(() {
-                            if (selectedStart == null ||
-                                (selectedStart != null &&
-                                    selectedEnd != null)) {
-                              selectedStart = dayNumber;
+                            if (start == null || end != null) {
+                              selectedStart = date;
                               selectedEnd = null;
-                              _invalidateEstimate();
-                            } else if (selectedStart != null &&
-                                selectedEnd == null) {
-                              if (dayNumber < selectedStart!) {
-                                selectedEnd = selectedStart;
-                                selectedStart = dayNumber;
-                              } else {
-                                selectedEnd = dayNumber;
-                              }
-                              _invalidateEstimate();
+                            } else if (date.isBefore(start)) {
+                              selectedEnd = start;
+                              selectedStart = date;
+                            } else {
+                              selectedEnd = date;
                             }
+                            _invalidateEstimate();
                           });
                         },
                   child: Container(
@@ -758,16 +745,8 @@ class _BookingPageState extends ConsumerState<BookingPage> {
                     );
                     return;
                   }
-                  final startDate = DateTime(
-                    visibleMonth.year,
-                    visibleMonth.month,
-                    selectedStart!,
-                  );
-                  final endDate = DateTime(
-                    visibleMonth.year,
-                    visibleMonth.month,
-                    selectedEnd!,
-                  );
+                  final startDate = selectedStart!;
+                  final endDate = selectedEnd!;
                   final today = DateTime.now();
                   if (!endDate.isAfter(startDate) ||
                       !startDate.isAfter(
@@ -895,4 +874,11 @@ class _BookingPageState extends ConsumerState<BookingPage> {
       ),
     );
   }
+}
+
+/// Whole calendar days between two local dates, immune to DST shifts.
+int rentalDayCount(DateTime start, DateTime end) {
+  final from = DateTime.utc(start.year, start.month, start.day);
+  final to = DateTime.utc(end.year, end.month, end.day);
+  return to.difference(from).inDays;
 }

@@ -12,6 +12,7 @@ import 'package:garilink_mobile/core/theme/shadows.dart';
 import 'package:garilink_mobile/core/theme/typography.dart';
 import 'package:garilink_mobile/features/authentication/presentation/providers/auth_provider.dart';
 import 'package:garilink_mobile/shared/widgets/empty_state.dart';
+import 'package:garilink_mobile/features/owner/presentation/providers/owner_mode_provider.dart';
 
 class ProfilePage extends ConsumerWidget {
   const ProfilePage({super.key});
@@ -55,7 +56,7 @@ class ProfilePage extends ConsumerWidget {
                 const SizedBox(height: GariLinkSpacing.xl),
                 const Divider(),
                 const SizedBox(height: GariLinkSpacing.xl),
-                _buildCtaBanner(),
+                _buildCtaBanner(context, ref),
                 const SizedBox(height: GariLinkSpacing.lg),
                 OutlinedButton.icon(
                   onPressed: ref.watch(authStateProvider).isLoading
@@ -180,8 +181,6 @@ class ProfilePage extends ConsumerWidget {
             },
           ),
           _buildDivider(),
-          _buildMenuItem(GariLinkIcons.payments, 'Payment Methods'),
-          _buildDivider(),
           _buildMenuItem(
             GariLinkIcons.savedVehicles,
             'Saved Vehicles',
@@ -214,6 +213,22 @@ class ProfilePage extends ConsumerWidget {
     bool isLast = false,
     VoidCallback? onTap,
   }) {
+    final available = onTap != null;
+    return Semantics(
+      button: available,
+      enabled: available,
+      label: available ? null : '$title, coming soon',
+      excludeSemantics: !available,
+      child: _buildMenuItemBody(icon, title, isLast: isLast, onTap: onTap),
+    );
+  }
+
+  Widget _buildMenuItemBody(
+    GariIconData icon,
+    String title, {
+    required bool isLast,
+    required VoidCallback? onTap,
+  }) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -245,17 +260,27 @@ class ProfilePage extends ConsumerWidget {
                 child: Text(
                   title,
                   style: GoogleFonts.inter(
-                    color: GariLinkColors.textPrimary,
+                    color: onTap == null
+                        ? GariLinkColors.textMuted
+                        : GariLinkColors.textPrimary,
                     fontSize: 15,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
-              const GariIcon(
-                GariLinkIcons.chevronRight,
-                color: GariLinkColors.textMuted,
-                size: 20,
-              ),
+              if (onTap == null)
+                Text(
+                  'Coming soon',
+                  style: GariLinkTypography.bodySmall.copyWith(
+                    color: GariLinkColors.textMuted,
+                  ),
+                )
+              else
+                const GariIcon(
+                  GariLinkIcons.chevronRight,
+                  color: GariLinkColors.textMuted,
+                  size: 20,
+                ),
             ],
           ),
         ),
@@ -263,8 +288,14 @@ class ProfilePage extends ConsumerWidget {
     );
   }
 
-  Widget _buildCtaBanner() {
+  Widget _buildCtaBanner(BuildContext context, WidgetRef ref) {
+    final owner = isVehicleOwner(ref.watch(authStateProvider).user);
+    final title = owner ? 'Your owner workspace' : 'Become a vehicle owner';
+    final subtitle = owner
+        ? 'Switch back to manage your vehicles and booking requests.'
+        : 'Add your first vehicle as a private draft. Nothing is published until you choose.';
     return Container(
+      key: const Key('profile-owner-cta'),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [Color(0xFF0B1F3A), Color(0xFF1D4ED8)],
@@ -275,9 +306,16 @@ class ProfilePage extends ConsumerWidget {
       ),
       child: Material(
         color: Colors.transparent,
-        child: Semantics(
-          label:
-              'Vehicle owner onboarding. Use the add button in the main navigation.',
+        child: InkWell(
+          borderRadius: BorderRadius.circular(GariLinkRadius.card),
+          onTap: () {
+            if (!owner) {
+              startVehicleListing(context, ref);
+              return;
+            }
+            ref.read(ownerModeProvider.notifier).state = true;
+            context.go('/owner-dashboard');
+          },
           child: Padding(
             padding: const EdgeInsets.all(GariLinkSpacing.lg),
             child: Row(
@@ -300,7 +338,7 @@ class ProfilePage extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Become a Vehicle Owner',
+                        title,
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 16,
@@ -309,7 +347,7 @@ class ProfilePage extends ConsumerWidget {
                       ),
                       const SizedBox(height: GariLinkSpacing.xs),
                       Text(
-                        'Use the + button below to create your first private draft',
+                        subtitle,
                         style: GoogleFonts.inter(
                           color: Colors.white.withValues(alpha: 0.8),
                           fontSize: 13,

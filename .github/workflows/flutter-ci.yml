@@ -1,0 +1,94 @@
+name: Flutter regression
+on:
+  pull_request:
+    paths: ['mobile_flutter/**', '.github/workflows/flutter-ci.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: flutter-ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  flutter:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+        working-directory: mobile_flutter
+    env:
+      # Matches mobile_flutter/.metadata revision cc0734ac (tag 3.41.7, Dart 3.11.5).
+      FLUTTER_VERSION: 3.41.7
+      # No API_BASE_URL or secrets: tests must never reach a hosted backend.
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Install pinned Flutter (checksum verified)
+        run: |
+          set -euo pipefail
+          curl -fLsS https://storage.googleapis.com/flutter_infra_release/releases/releases_linux.json -o "$RUNNER_TEMP/flutter-releases.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          d=json.loads(Path(os.environ['RUNNER_TEMP']+'/flutter-releases.json').read_text())
+          r=[x for x in d['releases'] if x['version']==os.environ['FLUTTER_VERSION'] and x['channel']=='stable' and x.get('dart_sdk_arch','x64')=='x64']
+          if len(r)!=1: raise SystemExit('Pinned Flutter release unavailable')
+          Path(os.environ['RUNNER_TEMP']+'/flutter-url').write_text(d['base_url']+'/'+r[0]['archive'])
+          Path(os.environ['RUNNER_TEMP']+'/flutter-checksum').write_text(r[0]['sha256']+'  flutter.tar.xz\n')
+          PY
+          pushd "$RUNNER_TEMP"
+          curl -fLsS "$(cat flutter-url)" -o flutter.tar.xz
+          sha256sum --check flutter-checksum
+          tar -xf flutter.tar.xz
+          popd
+          echo "$RUNNER_TEMP/flutter/bin" >> "$GITHUB_PATH"
+      - name: Toolchain versions
+        run: |
+          set -euo pipefail
+          flutter --version
+          dart --version
+          flutter config --no-analytics
+      - name: Resolve dependencies from the lockfile
+        run: flutter pub get --enforce-lockfile
+      - name: Formatting
+        run: dart format --output=none --set-exit-if-changed lib test
+      - name: Static analysis
+        run: flutter analyze
+      - name: Focused regression (navigation, booking, design system, environment)
+        run: |
+          set -euo pipefail
+          flutter test --no-pub --reporter expanded \
+            test/release_configuration_test.dart \
+            test/booking_continuation_test.dart \
+            test/booking_request_experience_test.dart \
+            test/design_system_test.dart \
+            test/transport_need_test.dart \
+            test/profile_edit_test.dart \
+            test/owner_draft_test.dart \
+            test/widget_test.dart
+      - name: Full widget and unit suite
+        run: flutter test --no-pub --reporter expanded
+      - name: Synthetic visual review renders (not device screenshots)
+        if: ${{ !cancelled() }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/flex-synthetic-renders"
+          mkdir -p "$out"
+          GARILINK_FLEX_OUTPUTS="$out" flutter test --no-pub --update-goldens test/flex_visual_review_test.dart
+          cat > "$out/README.txt" <<'TXT'
+          SYNTHETIC WIDGET RENDERS - NOT DEVICE SCREENSHOTS.
+          Produced by flutter_test (390x844 logical px, DPR 1, light theme) with
+          fixture data from test/*_test.dart. No backend, network or real photos.
+          Platform text shaping, GPU effects, system fonts and real scrolling
+          differ from an Android device. Use for layout and brand review only.
+          TXT
+          ls -la "$out"
+      - name: Upload synthetic renders
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: flex-synthetic-renders-${{ github.run_id }}
+          path: ${{ runner.temp }}/flex-synthetic-renders
+          if-no-files-found: warn
+          retention-days: 14

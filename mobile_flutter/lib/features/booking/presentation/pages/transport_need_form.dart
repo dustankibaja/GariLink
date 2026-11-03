@@ -176,6 +176,48 @@ class TransportNeedFormState extends State<TransportNeedForm> {
     if (selected != null && mounted) _selectPurpose(selected);
   }
 
+  /// The same five primary purposes as Home. Older detailed purposes (for
+  /// example a saved airport transfer) are kept unchanged and shown as text.
+  Widget _standardPurposeChips() {
+    final purpose = _purpose;
+    final legacy =
+        purpose != null &&
+        !_homePurposes.any((option) => option.purposes.contains(purpose));
+    return Padding(
+      padding: const EdgeInsets.only(bottom: GariLinkSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Wrap(
+            spacing: GariLinkSpacing.sm,
+            runSpacing: GariLinkSpacing.sm,
+            children: _homePurposes.map((option) {
+              final selected = option.purposes.contains(purpose);
+              return Semantics(
+                selected: selected,
+                button: true,
+                label: option.title,
+                child: ChoiceChip(
+                  key: Key('purpose-chip-${option.title}'),
+                  selected: selected,
+                  label: Text(option.title),
+                  onSelected: (_) => _selectHomePurpose(option),
+                ),
+              );
+            }).toList(),
+          ),
+          if (purpose != null && legacy) ...[
+            const SizedBox(height: GariLinkSpacing.sm),
+            Text(
+              'Current choice: ${purpose.label}',
+              style: GariLinkTypography.bodyMedium,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
   Widget _homePurposeCards() => LayoutBuilder(
     builder: (context, constraints) {
       final scale = MediaQuery.textScalerOf(context).scale(1);
@@ -319,35 +361,7 @@ class TransportNeedFormState extends State<TransportNeedForm> {
         if (widget.variant == TransportNeedFormVariant.home)
           _homePurposeCards()
         else
-          ..._purposeGroups.entries.map(
-            (group) => Padding(
-              padding: const EdgeInsets.only(bottom: GariLinkSpacing.lg),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(group.key, style: GariLinkTypography.labelSmall),
-                  const SizedBox(height: GariLinkSpacing.sm),
-                  Wrap(
-                    spacing: GariLinkSpacing.sm,
-                    runSpacing: GariLinkSpacing.sm,
-                    children: group.value.map((purpose) {
-                      final selected = purpose == _purpose;
-                      return Semantics(
-                        selected: selected,
-                        button: true,
-                        label: purpose.label,
-                        child: ChoiceChip(
-                          selected: selected,
-                          label: Text(purpose.label),
-                          onSelected: (_) => _selectPurpose(purpose),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          _standardPurposeChips(),
         if (_purpose != null) ...[
           const SizedBox(height: GariLinkSpacing.xl),
           Container(
@@ -428,26 +442,6 @@ class TransportNeedFormState extends State<TransportNeedForm> {
     ),
   );
 }
-
-const _purposeGroups = <String, List<TransportPurpose>>{
-  'PERSONAL & PASSENGER': [
-    TransportPurpose.personalTrip,
-    TransportPurpose.cityTravel,
-    TransportPurpose.familyOrGroup,
-    TransportPurpose.airportTransfer,
-  ],
-  'DELIVERY & GOODS': [
-    TransportPurpose.parcelDelivery,
-    TransportPurpose.smallCargo,
-    TransportPurpose.movingGoods,
-  ],
-  'BUSINESS & LONG DISTANCE': [
-    TransportPurpose.businessTransport,
-    TransportPurpose.regionalCargo,
-    TransportPurpose.heavyCargo,
-    TransportPurpose.longDistance,
-  ],
-};
 
 class _HomePurpose {
   const _HomePurpose({

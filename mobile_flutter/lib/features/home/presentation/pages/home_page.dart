@@ -440,7 +440,7 @@ const _popularCategories = <_PopularCategory>[
     'For daily trips and city travel',
     'assets/images/home/category_cars.jpg',
     Color(0xFF2563EB),
-    TransportNeed(purpose: TransportPurpose.cityTravel),
+    TransportNeed(purpose: TransportPurpose.personalTrip),
   ),
   _PopularCategory(
     'SUVs',
@@ -451,10 +451,10 @@ const _popularCategories = <_PopularCategory>[
   ),
   _PopularCategory(
     'Pickups',
-    'For work and business',
+    'For deliveries and small loads',
     'assets/images/home/category_pickups.jpg',
     GariLinkColors.accentDark,
-    TransportNeed(purpose: TransportPurpose.businessTransport),
+    TransportNeed(purpose: TransportPurpose.smallCargo),
   ),
 ];
 
