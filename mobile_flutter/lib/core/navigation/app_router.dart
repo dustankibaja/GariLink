@@ -32,8 +32,8 @@ import '../../features/owner/presentation/pages/owner_dashboard_page.dart';
 import '../../features/owner/presentation/pages/my_vehicles_page.dart';
 import '../../features/owner/presentation/pages/incoming_requests_page.dart';
 import '../../features/owner/presentation/pages/menu_page.dart';
-import '../../features/owner/presentation/pages/create_listing_page.dart';
 import '../../features/owner/data/owner_draft_repository.dart';
+import '../../features/owner/presentation/providers/owner_mode_provider.dart';
 import 'placeholder_pages.dart';
 import 'booking_continuation.dart';
 import '../../features/authentication/presentation/pages/email_confirmation_page.dart';
@@ -47,6 +47,8 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen<AuthState>(authStateProvider, (previous, next) {
     if (previous?.user != null && previous?.user?.id != next.user?.id) {
       continuation.clear();
+      // A different account starts in its own default navigation mode.
+      ref.read(ownerModeProvider.notifier).state = true;
     }
     refreshNotifier.refresh();
   });
@@ -349,11 +351,7 @@ class _RouterRefreshNotifier extends ChangeNotifier {
 
 // ─── Role detection helper ─────────────────────────────────────────────────
 
-bool _isOwner(User? user) {
-  if (user == null) return false;
-  return user.roles.contains(UserRole.privateOwner) ||
-      user.roles.contains(UserRole.dealer);
-}
+bool _isOwner(User? user) => isVehicleOwner(user);
 
 // ─── Scaffold with role-based bottom nav ──────────────────────────────────
 
@@ -366,7 +364,8 @@ class ScaffoldWithNavBar extends ConsumerWidget {
     final location = GoRouterState.of(context).matchedLocation;
     final authState = ref.watch(authStateProvider);
     final isAuthenticated = authState.isAuthenticated;
-    final isOwner = _isOwner(authState.user);
+    // Owners may switch to renting; the owner role itself is unchanged.
+    final isOwner = _isOwner(authState.user) && ref.watch(ownerModeProvider);
 
     // ── nav config ──────────────────────────────────────────────────────────
     final renterItems = [
@@ -452,39 +451,12 @@ class ScaffoldWithNavBar extends ConsumerWidget {
           ? FloatingActionButton(
               heroTag: 'main_fab',
               tooltip: 'Add a vehicle',
-              onPressed: () async {
-                if (!isAuthenticated) {
-                  context.push('/login');
+              onPressed: () {
+                if (isAuthenticated && !supabaseOwnerToolsEnabled) {
+                  _showListVehicleSheet(context);
                   return;
                 }
-                if (supabaseOwnerToolsEnabled) {
-                  final saved = await Navigator.of(context, rootNavigator: true)
-                      .push<bool>(
-                        MaterialPageRoute(
-                          builder: (_) => const CreateListingPage(),
-                        ),
-                      );
-                  if (!context.mounted) return;
-                  // Workspace creation grants the server-side private-owner role.
-                  // Refresh even after cancellation: a workspace may have been created
-                  // before an uncertain/failed draft request. Never invent the role.
-                  await ref.read(authStateProvider.notifier).refreshMe();
-                  if (!context.mounted) return;
-                  if (saved == true) {
-                    if (_isOwner(ref.read(authStateProvider).user)) {
-                      context.go('/my-vehicles');
-                    }
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Private draft saved. It is not published yet.',
-                        ),
-                      ),
-                    );
-                  }
-                  return;
-                }
-                _showListVehicleSheet(context);
+                startVehicleListing(context, ref);
               },
               backgroundColor: GariLinkColors.accent,
               shape: const CircleBorder(),
@@ -659,7 +631,7 @@ class _ListVehicleSheet extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Turn your vehicle into income. Share it securely with verified renters in Tanzania.',
+            'Turn your vehicle into income. Renters send requests, and you decide which to accept.',
             style: GariLinkTypography.bodyMedium,
             textAlign: TextAlign.center,
           ),

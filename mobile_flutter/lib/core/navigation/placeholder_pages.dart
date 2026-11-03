@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../shared/widgets/app_button.dart';
+import '../theme/colors.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -21,14 +22,17 @@ class WelcomePage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF2D7FF9),
+                  color: GariLinkColors.accent,
                 ),
               ),
               const SizedBox(height: 16),
               const Text(
-                'Your premium car rental and vehicle sharing platform.',
+                'Find the right vehicle for every journey in Tanzania.',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 16,
+                  color: GariLinkColors.textSecondary,
+                ),
               ),
               const SizedBox(height: 100),
               AppButton(

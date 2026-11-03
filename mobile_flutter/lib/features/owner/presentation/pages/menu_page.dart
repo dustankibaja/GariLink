@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../authentication/presentation/providers/auth_provider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:garilink_mobile/core/theme/theme.dart';
+import '../providers/owner_mode_provider.dart';
 
 class MenuPage extends ConsumerWidget {
   const MenuPage({super.key});
@@ -21,9 +23,11 @@ class MenuPage extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: GariLinkSpacing.lg),
+            _buildSectionHeader('RENTING'),
+            _buildSwitchToRenting(context, ref),
+            const SizedBox(height: GariLinkSpacing.xl),
             _buildSectionHeader('BUSINESS SETTINGS'),
             _buildMenuItem('Business Profile', GariLinkIcons.businessProfile),
-            _buildMenuItem('Payment & Payouts', GariLinkIcons.payments),
             _buildMenuItem('Team Management', GariLinkIcons.team),
             _buildMenuItem('Subscription', GariLinkIcons.subscription),
 
@@ -113,6 +117,66 @@ class MenuPage extends ConsumerWidget {
             const GariIcon(
               GariLinkIcons.lockClock,
               color: GariLinkColors.textMuted,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Owners keep their role; this only switches the navigation so they can
+  /// browse, request and track rentals like any customer.
+  Widget _buildSwitchToRenting(BuildContext context, WidgetRef ref) {
+    return InkWell(
+      key: const Key('owner-switch-to-renting'),
+      onTap: () {
+        ref.read(ownerModeProvider.notifier).state = false;
+        context.go('/home');
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(
+          horizontal: GariLinkSpacing.lg,
+          vertical: GariLinkSpacing.md,
+        ),
+        decoration: const BoxDecoration(color: GariLinkColors.surface),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(GariLinkSpacing.sm),
+              decoration: BoxDecoration(
+                color: GariLinkColors.accent.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(GariLinkRadius.badge),
+              ),
+              child: const GariIcon(
+                GariLinkIcons.vehicles,
+                color: GariLinkColors.accent,
+                size: 20,
+              ),
+            ),
+            const SizedBox(width: GariLinkSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Rent a vehicle',
+                    style: GariLinkTypography.bodyLarge.copyWith(
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(height: GariLinkSpacing.xs),
+                  Text(
+                    'Browse, request and track your own trips.',
+                    style: GariLinkTypography.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+            const GariIcon(
+              GariLinkIcons.chevronRight,
+              color: GariLinkColors.textMuted,
+              size: 20,
             ),
           ],
         ),
