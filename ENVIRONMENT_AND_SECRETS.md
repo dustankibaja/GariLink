@@ -4,8 +4,10 @@ GariLink currently supports development and production. No staging environment i
 
 | Name | Component/location | Owner/supplier | Required |
 | --- | --- | --- | --- |
-| `API_BASE_URL` | Flutter `--dart-define` | Release operator | Optional; production-safe HTTPS default exists |
-| `APP_ENV` | Flutter `--dart-define` | Release operator | Set to `production` for release |
+| `API_BASE_URL` | Flutter `--dart-define` | Developer / release operator | Required for debug and profile builds (local or staging). Release builds with `APP_ENV=production` use the approved production endpoint when it is omitted |
+| `APP_ENV` | Flutter `--dart-define` | Release operator | Defaults to `production` only in release builds and `development` otherwise. Any non-production value is refused if it points at the production project |
+
+Debug and profile builds no longer fall back to production. Without `API_BASE_URL` the app starts, but every request fails with a clear configuration message. Example local run: `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:54321/functions/v1/garilink-api`. Deliberate production debugging requires `--dart-define=APP_ENV=production`.
 | `GARILINK_KEYSTORE_FILE` | Protected build environment | Company | Signed release |
 | `GARILINK_KEYSTORE_PASSWORD` | Protected build environment | Company | Signed release |
 | `GARILINK_KEY_ALIAS` | Protected build environment | Company | Signed release |

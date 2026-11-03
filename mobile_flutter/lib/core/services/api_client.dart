@@ -15,6 +15,7 @@ class ApiClient {
   late final Dio _dio;
   Future<String?>? _refreshFuture;
   int? _refreshRevision;
+  ConfigurationException? _configurationError;
 
   static const _publicAuthPaths = {
     '/auth/login',
@@ -33,7 +34,7 @@ class ApiClient {
   ApiClient(this._storageService, {String? baseUrl, Dio? dio}) {
     _dio = dio ?? Dio();
     _dio.options = BaseOptions(
-      baseUrl: baseUrl ?? AppEnvironment.validatedApiBaseUrl(),
+      baseUrl: baseUrl ?? _resolveBaseUrl(),
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 20),
       sendTimeout: const Duration(seconds: 20),
@@ -46,6 +47,8 @@ class ApiClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           try {
+            final configurationError = _configurationError;
+            if (configurationError != null) throw configurationError;
             final revision = _storageService.sessionRevision;
             options.extra.putIfAbsent('sessionRevision', () => revision);
             if (options.extra['sessionRevision'] != revision) {
@@ -109,6 +112,22 @@ class ApiClient {
         },
       ),
     );
+  }
+
+  /// Non-null only for a development build without a usable endpoint.
+  ConfigurationException? get configurationError => _configurationError;
+
+  String _resolveBaseUrl() {
+    try {
+      return AppEnvironment.validatedApiBaseUrl();
+    } on StateError catch (error) {
+      // Release builds must never start against an unknown backend.
+      if (AppEnvironment.isRelease) rethrow;
+      // Development: start, but fail every request clearly. Never fall back
+      // to production.
+      _configurationError = ConfigurationException(error.message);
+      return AppEnvironment.unconfiguredApiBaseUrl;
+    }
   }
 
   Dio get dio => _dio;
