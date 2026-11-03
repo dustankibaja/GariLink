@@ -10,6 +10,46 @@ interface ApiConfig {
   googleRoutesApiKey?: string;
 }
 
+/** Codes the client may branch on. Anything else is never sent. */
+const PUBLIC_ERROR_CODES = new Set([
+  "VERIFIED_ACCOUNT_REQUIRED",
+  "OWN_VEHICLE",
+  "WORKSPACE_ACCESS_DENIED",
+  "PERMISSION_DENIED",
+]);
+
+/** Exact SQL 42501 messages raised by GariLink RPCs, mapped to public codes. */
+const AUTHORIZATION_FAILURES: Record<string, {code: string; message: string}> = {
+  // garilink_private.require_user(true): inactive, banned, unconfirmed, or no
+  // confirmed phone. Not only phone, so the copy must not promise otherwise.
+  "A confirmed account is required; verify contact before sensitive actions.": {
+    code: "VERIFIED_ACCOUNT_REQUIRED",
+    message:
+      "Your account isn't cleared for this action yet. Sending rental requests and publishing vehicles currently need a verified phone number.",
+  },
+  "Sign in with an active, verified account to continue.": {
+    code: "VERIFIED_ACCOUNT_REQUIRED",
+    message:
+      "Your account isn't cleared for this action yet. Sending rental requests and publishing vehicles currently need a verified phone number.",
+  },
+  "You cannot rent your own vehicle": {
+    code: "OWN_VEHICLE",
+    message: "You can't request a rental for a vehicle your workspace lists.",
+  },
+  "You cannot estimate your own vehicle": {
+    code: "OWN_VEHICLE",
+    message: "You can't request a rental for a vehicle your workspace lists.",
+  },
+  "Owners cannot manage their own rental": {
+    code: "OWN_VEHICLE",
+    message: "You can't manage a rental that you requested yourself.",
+  },
+  "Workspace access denied": {
+    code: "WORKSPACE_ACCESS_DENIED",
+    message: "You don't have access to this workspace.",
+  },
+};
+
 class HttpError extends Error {
   code?: string;
   status: number;
@@ -191,11 +231,18 @@ export function createApi(config: ApiConfig, fetcher: typeof fetch = fetch, rout
           401,
           "Your session has expired. Please sign in again.",
         );
-      if (response.status === 403 || detail?.code === "42501")
+      if (response.status === 403 || detail?.code === "42501") {
+        // Distinguish known SQL authorization causes by their exact message.
+        // Unknown 42501 causes stay generic; provider text is never forwarded.
+        const known = typeof detail?.message === "string"
+          ? AUTHORIZATION_FAILURES[detail.message]
+          : undefined;
         throw new HttpError(
           403,
-          "You do not have permission to perform this action.",
+          known?.message ?? "You do not have permission to perform this action.",
+          known?.code ?? "PERMISSION_DENIED",
         );
+      }
       if (detail?.code === "23505")
         throw new HttpError(409, "This record already exists.");
       if (response.status === 404 || detail?.code === "PT404")
@@ -965,6 +1012,10 @@ export function createApi(config: ApiConfig, fetcher: typeof fetch = fetch, rout
             error instanceof HttpError
               ? error.message
               : "An unexpected error occurred. Please try again.",
+          ...(error instanceof HttpError && error.code &&
+              PUBLIC_ERROR_CODES.has(error.code)
+            ? {code: error.code}
+            : {}),
         },
         error instanceof HttpError ? error.status : 500,
       );
