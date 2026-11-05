@@ -250,9 +250,7 @@ void main() {
   ) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: Scaffold(
-          body: SingleChildScrollView(child: TransportNeedForm()),
-        ),
+        home: Scaffold(body: SingleChildScrollView(child: TransportNeedForm())),
       ),
     );
     for (final title in [

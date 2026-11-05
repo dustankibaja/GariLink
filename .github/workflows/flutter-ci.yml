@@ -52,12 +52,7 @@ jobs:
       - name: Resolve dependencies from the lockfile
         run: flutter pub get --enforce-lockfile
       - name: Formatting
-        run: |
-          if ! dart format --output=none --set-exit-if-changed lib test; then
-            dart format test/transport_need_test.dart
-            git diff -- test/transport_need_test.dart
-            exit 1
-          fi
+        run: dart format --output=none --set-exit-if-changed lib test
       - name: Static analysis
         run: flutter analyze
       - name: Focused regression (navigation, booking, design system, environment)
