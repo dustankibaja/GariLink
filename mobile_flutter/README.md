@@ -1,3 +1,5 @@
+> For current onboarding, start with [development](../DEVELOPMENT.md), [architecture](../docs/architecture/CURRENT_ARCHITECTURE.md), and [environment configuration](../ENVIRONMENT.md). The original material follows.
+
 # garilink_mobile
 
 A new Flutter project.

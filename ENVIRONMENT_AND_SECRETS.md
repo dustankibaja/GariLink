@@ -1,3 +1,5 @@
+> For current onboarding, start with [development](DEVELOPMENT.md), [architecture](docs/architecture/CURRENT_ARCHITECTURE.md), and [environment configuration](ENVIRONMENT.md). The original material follows.
+
 # GariLink environments and secrets
 
 GariLink currently supports development and production. No staging environment is claimed.
