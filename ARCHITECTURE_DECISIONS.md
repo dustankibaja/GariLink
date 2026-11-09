@@ -1,3 +1,5 @@
+> For current onboarding, start with [development](DEVELOPMENT.md), [architecture](docs/architecture/CURRENT_ARCHITECTURE.md), and [environment configuration](ENVIRONMENT.md). The original material follows.
+
 # Architecture Decisions & Constraints (Phase 1 → Phase 2)
 
 As GariLink transitions from Phase 1 (Foundation) to Phase 2, the following architectural decisions, assumptions, and constraints are **FROZEN** and must not be altered without explicit justification and impact analysis.
